@@ -165,3 +165,27 @@
 			});
 
 })(jQuery);
+
+// New Code for Section Visibility on Scroll
+(function($) {
+    var $window = $(window);
+
+    // Function to check if an element is in the viewport
+    function isElementInView(element) {
+        var elementTop = $(element).offset().top;
+        var viewportBottom = $window.scrollTop() + $window.height();
+        return elementTop < viewportBottom;
+    }
+
+    // Event handler for scrolling
+    $window.on('scroll', function() {
+        $('.section-hidden').each(function() {
+            if (isElementInView(this)) {
+                $(this).addClass('section-visible');
+            }
+        });
+    });
+
+    // Trigger the scroll event on page load to check the visibility of sections
+    $window.trigger('scroll');
+})(jQuery);
