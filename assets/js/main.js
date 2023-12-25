@@ -42,6 +42,27 @@
 
 		}
 
+		//Change header name on scroll
+		document.addEventListener('DOMContentLoaded', (event) => {
+			const header = document.getElementById('header');
+			const headerTitle = header.querySelector('h1');
+			let sections = document.querySelectorAll('section[data-title]');
+			
+			function onScroll() {
+			  let scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
+		  
+			  for (let i = sections.length - 1; i >= 0; i--) {
+				if (scrollPosition >= sections[i].offsetTop) {
+				  headerTitle.textContent = sections[i].getAttribute('data-title');
+				  break; // If the current section is found, no need to continue checking
+				}
+			  }
+			}
+		  
+			window.addEventListener('scroll', onScroll);
+		  });
+		  
+
 	// Menu.
 		var $menu = $('#menu');
 
