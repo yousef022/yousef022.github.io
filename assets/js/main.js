@@ -47,20 +47,20 @@
 			const header = document.getElementById('header');
 			const headerTitle = header.querySelector('h1');
 			let sections = document.querySelectorAll('section[data-title]');
-			
-			function onScroll() {
-			  let scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
 		  
-			  for (let i = sections.length - 1; i >= 0; i--) {
-				if (scrollPosition >= sections[i].offsetTop) {
-				  headerTitle.textContent = sections[i].getAttribute('data-title');
-				  break; // If the current section is found, no need to continue checking
+			let observer = new IntersectionObserver((entries, observer) => {
+			  entries.forEach(entry => {
+				if (entry.isIntersecting) {
+				  headerTitle.textContent = entry.target.getAttribute('data-title');
 				}
-			  }
-			}
+			  });
+			}, { threshold: 0.4 }); // Adjust the threshold as needed
 		  
-			window.addEventListener('scroll', onScroll);
+			sections.forEach(section => {
+			  observer.observe(section);
+			});
 		  });
+		  
 		  
 
 	// Menu.
