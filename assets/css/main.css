@@ -183,6 +183,7 @@ input, select, textarea {
 		a:hover {
 			border-bottom-color: transparent;
 			color: #ffffff !important;
+			text-decoration: none;
 		}
 
 		a.special:not(.button) {
@@ -2093,11 +2094,23 @@ input, select, textarea {
 	.project-article {
 		box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Horizontal offset, vertical offset, blur radius, color */
 		transition: box-shadow 0.3s ease-in-out; /* Smooth transition for the shadow */
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between; /* This will push the header and paragraph to the top, and the tech-container to the bottom */
+		
+		
+		
+	
+		
+		
 	}
+
 	
 	.project-article:hover {
 		box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Larger shadow on hover for a "lifting" effect */
 	}
+
+	
 	
 
 /* Form */
@@ -3011,6 +3024,13 @@ input, select, textarea {
 		-ms-flex-wrap: wrap;
 		flex-wrap: wrap;
 		margin: 0 0 2em 0;
+		flex-direction: row; /* Stack the articles vertically */
+		height: 100%;
+		align-items: stretch;
+		
+		
+		
+		
 	}
 
 		.features article {
@@ -4512,5 +4532,154 @@ input, select, textarea {
 		opacity: 1;
 		transform: translateY(0);
 	}
+
+/* Fonts */
+	@font-face {
+		font-family: 'Kanit';
+		src: url('webfonts/Kanit-Regular.ttf') format('truetype');
+		font-weight: normal;
+		font-style: normal;
+	}
+
+	@font-face {
+		font-family: 'Kanit';
+		src: url('webfonts/Kanit-Italic.ttf') format('truetype');
+		font-weight: normal;
+		font-style: italic;
+	}
+
+	@font-face {
+		font-family: 'Kanit';
+		src: url('webfonts/Kanit-Bold.ttf') format('truetype');
+		font-weight: bold;
+		font-style: normal;
+	}
+
+	/* Continue defining @font-face for other weights and styles as necessary */
+
   
+/* Tech bubbles*/
+	.tech-bubble {
+		display: inline-block;
+		padding: 8px 12px; /* Increased padding for a more spacious look */
+		margin: 5px; /* Uniform margin for spacing all around */
+		border-radius: 20px; /* More pronounced rounded corners for a pill shape */
+		background-color: rgba(255, 255, 255, 0.55); /* Semi-transparent background using RGBA */
+		color: #ffffff;
+		font-size: 0.75em; /* Slightly larger font size for better readability */
+		vertical-align: middle;
+		font-family: 'Kanit', sans-serif;
+		font-weight: 600; /* 'regular' is not a valid value, changed to numerical value */
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+		transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Smooth transition for hover effects */
+		margin-bottom: 0;
+		
+	}
+
+	.tech-bubble:last-child {
+		border-right: none; /* Ensure the last child doesn't have a border */
+	}
+
+	.tech-used {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center; /* Align bubbles vertically in the center */
+		justify-content: flex-start; /* Align bubbles to the left */
+		gap: 10px; /* Space between bubbles */
+		margin-top: 10px; /* Space between tech-line and bubbles */
+	}
+
+	.tech-line {
+		border-top: 2px solid #ccc; /* Adjust color as needed */
+		width: 100%; /* Line takes full width */
+		margin: 20px 0; /* Adds space above and below the line */
+	}
+	
+	.tech-bubble.kotlin {
+		background-color: rgba(181, 129, 255, 0.8); /* Adjusted to a lighter, more distinct purple */
+	}
+	
+	
+	.tech-bubble.nodejs {
+		background-color: rgba(140, 200, 75, 0.8); /* A soft green with transparency */
+	}
+	
+	.tech-bubble.jira {
+		background-color: #0052CC; /* Example color for JIRA */
+		color: #ffffff; /* Make sure to add this line to set the text color */
+	}
+
+	.tech-bubble.sql {
+		background-color: rgba(0, 123, 255, 0.7); /* Blue for SQL */
+		color: #ffffff;
+	}
+	
+	.tech-bubble.aspnet {
+		background-color: rgba(123, 31, 162, 0.7); /* Purple for ASP.NET */
+		color: #ffffff;
+	}
+	
+	.tech-bubble.python {
+		background-color: rgba(53, 114, 165, 0.7); /* Dark cyan for Python */
+		color: #ffffff;
+	}
+	
+	.tech-bubble.entityframeworkcore {
+		background-color: rgba(47, 79, 79, 0.7); /* Dark slate gray for EntityFrameworkCore */
+	}
+	
+	.tech-bubble.iot {
+		background-color: rgba(32, 178, 170, 0.7); /* Light sea green for IoT devices */
+		color: #ffffff;
+	}
+	
+	.tech-bubble.flask {
+		background-color: rgba(0, 0, 0, 0.7); /* Black for Flask server */
+		color: #ffffff;
+	}
+
+	.tech-bubble.firebase {
+		background-color: rgba(255, 153, 0, 0.7); /* Orange for Firebase */
+	}
+
+	.tech-bubble.csharp {
+		background-color: rgba(70, 130, 180, 0.8); /* Steel blue for C# */
+		color: #ffffff;
+	}
+		
+
+	.tech-bubble:hover {
+		box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow for a "lifted" effect */
+		background-color: rgba(230, 230, 230, 0.8);
+		/* border: 1px solid rgba(255, 255, 255, 0.8); Light border for subtle highlight */
+		/* transform: scale(1.05); Slightly larger scale for emphasis */
+		cursor: pointer; /* Change cursor to indicate clickability */
+		
+		
+	}
+
+	.tech-container {
+		/* display: flex;
+		flex-direction: column; */
+		margin-bottom: 12px;
+		
+	}
+
+	a {
+		text-decoration: none;
+		outline: 0;
+		border: none;
+	}
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 
