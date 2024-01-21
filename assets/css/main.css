@@ -4646,6 +4646,28 @@ input, select, textarea {
 		background-color: rgba(70, 130, 180, 0.8); /* Steel blue for C# */
 		color: #ffffff;
 	}
+
+	.tech-bubble.express {
+		background-color: rgba(89, 119, 71, 0.8); /* A shade of green representing Express.js */
+		color: #ffffff;
+	}
+	
+	.tech-bubble.react {
+		background-color: rgba(97, 218, 251, 0.8); /* A light blue color associated with React */
+		color: #ffffff;
+	}
+	
+	.tech-bubble.mongodb {
+		background-color: rgba(71, 162, 71, 0.8); /* Green color representing MongoDB */
+		color: #ffffff;
+	}
+
+	.tech-bubble.webscraping {
+		background-color: rgba(129, 199, 132, 0.8); /* A shade of green that could represent scraping/gathering data */
+		color: #ffffff;
+	}
+	
+	
 		
 
 	.tech-bubble:hover {
