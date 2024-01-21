@@ -55,7 +55,7 @@
 				  headerTitle.textContent = entry.target.getAttribute('data-title');
 				}
 			  });
-			}, { threshold: 0.4 }); // Adjust the threshold as needed
+			}, { threshold: 0.3 }); // Adjust the threshold as needed
 		  
 			sections.forEach(section => {
 			  observer.observe(section);
