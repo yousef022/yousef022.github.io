@@ -4477,8 +4477,18 @@ input, select, textarea {
 		font-size: 1.5em;
 	}
 
+
+	.skill h4 {
+		margin-bottom: 0.5em;
+		font-size: 0.7em;
+		font-family: 'robotoBold';
+	}
+
 	.skill p {
-		font-size: 1em;
+		font-size: 0.75em;
+		font-family: 'robotoRegular'
+		
+		
 	}
 
 	.skill {
@@ -4499,6 +4509,16 @@ input, select, textarea {
 		-ms-filter: blur(0);
 		filter: blur(0);
 		opacity: 1;
+		
+	}
+
+/* Education */
+	.education h4{
+		font-size: 0.8em;
+	}
+
+	.education li{
+		font-family: 'robotoRegular';
 	}
 
 	body.is-preload .skill {
@@ -4535,24 +4555,48 @@ input, select, textarea {
 
 /* Fonts */
 	@font-face {
-		font-family: 'Kanit';
-		src: url('webfonts/Kanit-Regular.ttf') format('truetype');
+		font-family: 'kanitRegular';
+		src: url('../webfonts/Kanit-Regular.ttf') format('truetype');
 		font-weight: normal;
 		font-style: normal;
 	}
 
 	@font-face {
-		font-family: 'Kanit';
-		src: url('webfonts/Kanit-Italic.ttf') format('truetype');
+		font-family: 'kanitItalic';
+		src: url('../webfonts/Kanit-Italic.ttf') format('truetype');
 		font-weight: normal;
 		font-style: italic;
 	}
 
 	@font-face {
-		font-family: 'Kanit';
-		src: url('webfonts/Kanit-Bold.ttf') format('truetype');
+		font-family: 'kanitBold';
+		src: url('../webfonts/Kanit-Bold.ttf') format('truetype');
 		font-weight: bold;
 		font-style: normal;
+	}
+
+	@font-face {
+		font-family: 'robotoRegular';
+		src: url('../webfonts/Roboto-Regular.ttf') format('truetype');
+		font-weight: normal;
+		font-style: normal;
+		
+	}
+
+	@font-face {
+		font-family: 'robotoBold';
+		src: url('../webfonts/Roboto-Bold.ttf') format('truetype');
+		font-weight: bold;
+		font-style: normal;
+		
+	}
+
+	@font-face {
+		font-family: 'robotoExtraBold';
+		src: url('../webfonts/Roboto-ExtraBold.ttf') format('truetype');
+		font-weight: bold;
+		font-style: normal;
+		
 	}
 
 	/* Continue defining @font-face for other weights and styles as necessary */
