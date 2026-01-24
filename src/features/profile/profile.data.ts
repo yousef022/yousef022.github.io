@@ -1,6 +1,6 @@
 export const profile = {
   name: "Yousef Osman",
-  role: "Software Dev · 2 YOE",
+  role: "Software Engineer · Startups · 2 YOE",
   location: "Ontario, Canada",
   pitch:
     "I build product-grade systems at startups. I focus on clean architecture, pragmatic tradeoffs, and shipping.",

@@ -10,7 +10,7 @@ const ShipLogItemView: React.FC<Props> = ({ item }) => (
     <div className="row" style={{ justifyContent: "space-between" }}>
       <div className="row">
         <span className="kbd">{formatDate(item.date)}</span>
-        <span style={{ color: "rgba(231,234,241,0.95)", fontWeight: 600 }}>{item.title}</span>
+        <span style={{ color: "var(--text)", fontWeight: 600 }}>{item.title}</span>
       </div>
       <div className="stack">
         {item.tags.map((t) => (
