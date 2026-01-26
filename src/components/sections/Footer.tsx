@@ -8,12 +8,12 @@ const Footer: React.FC = () => (
         style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}
       >
         <span className="p">
-          © {new Date().getFullYear()} {profile.name}
+          (c) {new Date().getFullYear()} {profile.name}
         </span>
         <div className="row">
-          {profile.links.map((l) => (
-            <a key={l.href} href={l.href} className="p">
-              {l.label}
+          {profile.links.map((link) => (
+            <a key={link.href} href={link.href} className="p">
+              {link.label}
             </a>
           ))}
         </div>

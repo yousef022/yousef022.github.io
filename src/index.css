@@ -10,10 +10,16 @@
   --radius2: 22px;
   --max: 1040px;
 
+  --hero-cols: minmax(0, 1.25fr) minmax(0, 360px);
+  --hero-gap: 18px;
+
+
   --container-x: clamp(16px, 3vw, 28px);
   --page-y: clamp(18px, 3vw, 28px);
   --card-pad: clamp(16px, 2.2vw, 22px);
   --h1: clamp(34px, 4.2vw, 46px);
+  --section-gap: clamp(32px, 7vw, 96px);
+  --section-pad: clamp(18px, 4.5vw, 56px);
 
   --border-strong: rgba(255, 255, 255, 0.18);
   --surface: rgba(255, 255, 255, 0.02);
@@ -39,7 +45,11 @@ body {
     Arial;
   background:
     radial-gradient(1200px 700px at 15% 10%, rgba(120, 100, 255, 0.16), transparent 50%),
-    radial-gradient(900px 600px at 80% 0%, rgba(0, 220, 255, 0.1), transparent 45%), var(--bg);
+    radial-gradient(900px 600px at 80% 0%, rgba(0, 220, 255, 0.1), transparent 45%),
+    var(--bg);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
   color: var(--text);
 }
 
@@ -55,6 +65,13 @@ a:hover {
   max-width: var(--max);
   margin: 0 auto;
   padding-inline: var(--container-x);
+}
+
+.navBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
 .h1 {
@@ -104,6 +121,97 @@ a:hover {
   .grid2 {
     grid-template-columns: 1fr;
   }
+}
+
+.sectionList {
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  position: relative;
+  z-index: 0;
+  padding-block: var(--section-pad);
+  scroll-margin-top: 90px;
+}
+
+.section::after {
+  content: "";
+  position: absolute;
+  inset: -10px -12px;
+  border-radius: 28px;
+  background:
+    radial-gradient(
+      420px 240px at 20% -10%,
+      rgba(0, 180, 255, 0.12),
+      transparent 60%
+    );
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.section + .section {
+  margin-top: var(--section-gap);
+}
+
+.section + .section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.section:nth-of-type(even)::after {
+  background:
+    radial-gradient(
+      420px 240px at 85% -10%,
+      rgba(255, 170, 80, 0.12),
+      transparent 60%
+    );
+}
+
+.eduCard {
+  display: grid;
+  gap: 12px;
+}
+
+.eduHeader {
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.eduTitle {
+  margin: 0;
+  font-size: 18px;
+}
+
+.eduProgram {
+  margin-top: 6px;
+}
+
+.eduPeriod {
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+.eduLabel {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.eduTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .kbd {
@@ -173,7 +281,11 @@ html[data-theme="light"] {
 html[data-theme="light"] body {
   background:
     radial-gradient(1200px 700px at 15% 10%, rgba(120, 100, 255, 0.14), transparent 50%),
-    radial-gradient(900px 600px at 80% 0%, rgba(0, 220, 255, 0.1), transparent 45%), var(--bg);
+    radial-gradient(900px 600px at 80% 0%, rgba(0, 220, 255, 0.1), transparent 45%),
+    var(--bg);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 /* --- Sliding active pill indicator (TopNav) --- */
@@ -184,7 +296,7 @@ html[data-theme="light"] body {
   .nav {
     position: relative;
     display: flex;
-    gap: 6px;
+    gap: 8px;
     flex-wrap: wrap;
     align-items: center;
   }
@@ -195,12 +307,16 @@ html[data-theme="light"] body {
     z-index: 1;
     display: inline-flex;
     align-items: center;
-    padding: 10px 12px;
+    justify-content: center;
+    height: 38px;
+    padding: 0 14px;
     border-radius: 12px;
     text-decoration: none;
     color: var(--muted);
     border: 1px solid transparent;
     background: transparent;
+    box-sizing: border-box;
+    line-height: 1;
     transition:
       color 160ms ease,
       transform 160ms ease;
@@ -270,10 +386,13 @@ html[data-theme="light"] body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   }
 
-  /* button */
-  .nav button {
-    padding: 10px 12px;
-    border-radius: 12px;
+  .themeToggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 38px;
+    padding: 0 10px;
+    border-radius: 999px;
     border: 1px solid var(--border-strong);
     background: var(--surface2);
     color: var(--text);
@@ -281,21 +400,56 @@ html[data-theme="light"] body {
     font: inherit;
     transition:
       transform 160ms ease,
-      filter 160ms ease;
+      filter 160ms ease,
+      border-color 160ms ease;
   }
-  .nav button:hover {
+
+  .themeToggle:hover {
     transform: translateY(-1px);
     filter: brightness(1.05);
+    border-color: var(--border-strong);
   }
-  .nav button:active {
+
+  .themeToggle:active {
     transform: translateY(0px) scale(0.98);
+  }
+
+  .themeToggleLabel {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .themeToggleTrack {
+    position: relative;
+    width: 36px;
+    height: 20px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  .themeToggleThumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: var(--text);
+    transition: transform 180ms ease;
+  }
+
+  html[data-theme="light"] .themeToggleThumb {
+    transform: translateX(16px);
   }
 
   @media (prefers-reduced-motion: reduce) {
     .nav a,
     .nav a::after,
     .navIndicator,
-    .nav button {
+    .themeToggle,
+    .themeToggleThumb {
       transition: none;
     }
   }
@@ -319,7 +473,7 @@ html[data-theme="light"] body {
 
   ::-webkit-scrollbar-thumb {
     border-radius: 999px;
-    border: 3px solid transparent;           /* creates “padding” */
+    border: 3px solid transparent;           /* creates padding */
     background-clip: padding-box;
     background-color: rgba(255, 255, 255, 0.16);
   }

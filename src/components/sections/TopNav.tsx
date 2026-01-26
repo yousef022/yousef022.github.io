@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import NavPill from "../ui/NavPill";
 import { NavLink } from "react-router-dom";
-import { profile } from "../../features/profile/profile.data";
 
 const TopNav: React.FC = () => {
   type Theme = "dark" | "light";
@@ -36,26 +35,14 @@ const TopNav: React.FC = () => {
   return (
     <header style={{ borderBottom: "1px solid var(--border)" }}>
       <div className="bar">
-        <div
-          className="container"
-          style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span className="brand">{profile.name}</span>
-          </div>
-          <div
-            className="navWrap"
-            ref={setNavWrapEl}
-          >
+        <div className="container navBar">
+          <div className="navWrap" ref={setNavWrapEl}>
             <nav className="nav">
               <NavLink to="/" style={linkStyle} end>
-                Ship Log
+                Home
               </NavLink>
               <NavLink to="/projects" style={linkStyle}>
                 Projects
-              </NavLink>
-              <NavLink to="/now" style={linkStyle}>
-                Now
               </NavLink>
               <NavLink to="/about" style={linkStyle}>
                 About
@@ -63,28 +50,24 @@ const TopNav: React.FC = () => {
               <NavLink to="/contact" style={linkStyle}>
                 Contact
               </NavLink>
-
-              <button
-                type="button"
-                onClick={toggleTheme}
-                title="Toggle theme"
-                aria-label="Toggle theme"
-                style={{
-                  padding: "10px 12px",
-                  borderRadius: 12,
-                  border: "1px solid var(--border-strong)",
-                  background: "var(--surface2)",
-                  color: "inherit",
-                  cursor: "pointer",
-                  font: "inherit",
-                }}
-              >
-                {theme === "dark" ? "Light ☀" : "Dark ☾"}
-              </button>
             </nav>
 
             <NavPill containerEl={navWrapEl} />
           </div>
+
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="themeToggle"
+            title="Toggle theme"
+            aria-label="Toggle theme"
+            aria-pressed={theme === "light"}
+          >
+            <span className="themeToggleLabel">{theme === "dark" ? "Dark" : "Light"}</span>
+            <span className="themeToggleTrack" aria-hidden="true">
+              <span className="themeToggleThumb" />
+            </span>
+          </button>
         </div>
       </div>
     </header>
