@@ -5,9 +5,13 @@ import Footer from "../../components/sections/Footer";
 const AppShell: React.FC = () => (
   <div className="app">
     <TopNav />
-    <main className="container">
-      <Outlet />
+
+    <main className="page">
+      <div className="container">
+        <Outlet />
+      </div>
     </main>
+
     <Footer />
   </div>
 );

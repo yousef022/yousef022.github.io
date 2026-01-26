@@ -1,0 +1,112 @@
+.ac-timeline { position: relative; }
+.ac-timeline__inner { position: relative; }
+
+.ac-timeline__lineBase {
+  position: absolute;
+  left: 12px;
+  top: 0;
+  width: 2px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.14);
+}
+@media (prefers-color-scheme: dark) {
+  .ac-timeline__lineBase { background: rgba(255,255,255,0.10); }
+}
+
+.ac-timeline__lineFill {
+  position: absolute;
+  left: 12px;
+  top: 0;
+  width: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    rgba(99, 102, 241, 0),
+    rgba(99, 102, 241, 0.9),
+    rgba(236, 72, 153, 0.9),
+    rgba(236, 72, 153, 0)
+  );
+}
+
+.ac-timeline__item {
+  position: relative;
+  padding-left: 44px;
+  padding-bottom: 22px;
+  display: grid;
+  grid-template-columns: var(--ac-title-col, 220px) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.ac-timeline__sticky {
+  position: static;
+  align-self: start;
+
+  /* lock width so sticky doesn't re-measure and “shift” */
+  width: var(--ac-title-col, 220px);
+  min-width: var(--ac-title-col, 220px);
+  justify-self: start;
+  box-sizing: border-box;
+
+  /* move spacing here instead of title margin (prevents jump) */
+  padding-top: 8px;
+
+  /* reduce subpixel jitter */
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+
+
+
+/* stickyTitle prop */
+.ac-timeline[data-sticky-title="true"] .ac-timeline__sticky {
+  position: sticky;
+  top: var(--ac-sticky-top, 84px);
+}
+
+.ac-timeline__title {
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.ac-timeline__dotWrap {
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+}
+
+.ac-timeline__dotOuter {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.7);
+  box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.12);
+}
+@media (prefers-color-scheme: dark) {
+  .ac-timeline__dotOuter {
+    background: rgba(0,0,0,0.55);
+    box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.18);
+  }
+}
+
+.ac-timeline__dotInner {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.9);
+  box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.10);
+}
+
+.ac-timeline__content { min-width: 0; }
+
+@media (max-width: 900px) {
+  .ac-timeline__item { grid-template-columns: 1fr; }
+  .ac-timeline__sticky { position: static !important; }
+}

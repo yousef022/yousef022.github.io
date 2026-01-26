@@ -16,13 +16,13 @@ const ProjectCard: React.FC<Props> = ({ project }) => (
       </div>
 
       <Link to={`/projects/${project.slug}`} className="kbd">
-        Open →
+        Open
       </Link>
     </div>
 
     <div className="stack" style={{ marginTop: 12 }}>
-      {project.stack.map((s) => (
-        <Tag key={s} text={s} />
+      {project.stack.map((stackItem) => (
+        <Tag key={stackItem} text={stackItem} />
       ))}
     </div>
   </Card>

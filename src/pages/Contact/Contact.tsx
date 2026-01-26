@@ -4,17 +4,22 @@ import { profile } from "../../features/profile/profile.data";
 import { useDocumentTitle } from "../../lib/hooks/useDocumentTitle";
 
 const Contact: React.FC = () => {
-  useDocumentTitle(`${profile.name} · Contact`);
+  useDocumentTitle(`${profile.name} - Contact`);
 
   return (
     <Card>
-      <h1 className="h1" style={{ fontSize: 34 }}>Contact</h1>
-      <p className="p">Best way to reach me:</p>
+      <h1 className="h1" style={{ fontSize: 34 }}>
+        Contact
+      </h1>
+      <p className="p">
+        Want to collaborate or have a project in mind? The fastest way to reach
+        me is email or LinkedIn.
+      </p>
 
       <div className="row" style={{ marginTop: 14 }}>
-        {profile.links.map((l) => (
-          <Button key={l.href} href={l.href}>
-            {l.label}
+        {profile.links.map((link) => (
+          <Button key={link.href} href={link.href}>
+            {link.label}
           </Button>
         ))}
       </div>

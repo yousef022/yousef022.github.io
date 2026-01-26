@@ -6,8 +6,8 @@ type Props = {
 
 const Button: React.FC<Props> = ({ href, onClick, children }) => {
   const style: React.CSSProperties = {
-    border: "1px solid rgba(255,255,255,0.12)",
-    background: "rgba(255,255,255,0.05)",
+    border: "1px solid var(--border-strong)",
+    background: "var(--surface2)",
     padding: "10px 14px",
     borderRadius: 14,
     display: "inline-flex",

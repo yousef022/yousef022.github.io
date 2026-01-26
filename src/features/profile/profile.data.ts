@@ -1,12 +1,13 @@
 export const profile = {
   name: "Yousef Osman",
-  role: "Software Dev · 2 YOE",
-  location: "Ontario, Canada",
+  role: "Software Developer",
+  location: "Mississauga, Ontario",
   pitch:
-    "I build product-grade systems at startups. I focus on clean architecture, pragmatic tradeoffs, and shipping.",
+    "Software developer focused on product-grade web apps, clean architecture, and fast, reliable shipping.",
+  focus: ["Product UI", "Design systems", "Full-stack delivery", "Startups"],
   links: [
-    { label: "GitHub", href: "https://github.com/YOUR_GITHUB" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/YOUR_LINKEDIN" },
-    { label: "Email", href: "mailto:you@example.com" },
+    { label: "GitHub", href: "https://github.com/yousef022" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/yousefosman/" },
+    { label: "Email", href: "mailto:osmanyo@sheridancollege.ca" },
   ],
 } as const;
