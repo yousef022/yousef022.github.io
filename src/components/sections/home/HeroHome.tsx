@@ -12,6 +12,7 @@ import {
   LayersIcon,
   PinIcon,
 } from "../../../assets/icons";
+import yoMark from "../../../assets/A_YO.svg?url";
 
 const HomeHero: React.FC = () => {
   const emailLink = profile.links.find((l) => l.label === "Email");
@@ -48,6 +49,7 @@ const HomeHero: React.FC = () => {
         chips={profile.focus}
         socials={socials}
         stats={stats}
+        avatarSrc={yoMark}
         primaryCta={{ label: "View Projects", href: "/#/projects" }}
         secondaryCta={emailLink ? { label: "Contact", href: emailLink.href } : undefined}
         footerBadges={["Open to startup roles", "Fast shipping • Clean systems"]}

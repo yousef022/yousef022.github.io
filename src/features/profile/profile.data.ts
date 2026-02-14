@@ -8,6 +8,6 @@ export const profile = {
   links: [
     { label: "GitHub", href: "https://github.com/yousef022" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/yousefosman/" },
-    { label: "Email", href: "mailto:osmanyo@sheridancollege.ca" },
+    { label: "Email", href: "mailto:yousefmobiledev@gmail.com" },
   ],
 } as const;

@@ -20,21 +20,23 @@ export type HeroBentoStat = {
 };
 
 export type HeroBentoProps = {
-  title: string;          // usually name
-  subtitle?: string;      // usually role
+  title: string; // usually name
+  subtitle?: string; // usually role
   tagline: string;
 
-  avatarText?: string;    // e.g. initials; if omitted, computed from title
+  avatarText?: string; // e.g. initials; if omitted, computed from title
 
   primaryCta?: HeroBentoCta;
   secondaryCta?: HeroBentoCta;
 
-  chips?: readonly string[];       // 0..n (we'll render up to 4)
+  chips?: readonly string[]; // 0..n (we'll render up to 4)
   socials?: HeroBentoSocial[];
   stats?: HeroBentoStat[];
 
   footerBadges?: string[]; // optional “micro” row
   className?: string;
+
+  avatarSrc?: string; // if provided, overrides initials avatar
 };
 
 const HeroBento: React.FC<HeroBentoProps> = ({
@@ -49,6 +51,7 @@ const HeroBento: React.FC<HeroBentoProps> = ({
   stats = [],
   footerBadges = [],
   className,
+  avatarSrc,
 }) => {
   const initials = useMemo(() => {
     if (avatarText?.trim()) return avatarText.trim().slice(0, 2).toUpperCase();
@@ -67,7 +70,11 @@ const HeroBento: React.FC<HeroBentoProps> = ({
         <div className="hbTop">
           <div className="hbId">
             <div className="hbAvatar" aria-hidden>
-              {initials}
+              {avatarSrc ? (
+                <img className="hbAvatarImg" src={avatarSrc} alt="" />
+              ) : (
+                <div className="hbAvatarText">{initials}</div>
+              )}
             </div>
 
             <div className="hbTitle">

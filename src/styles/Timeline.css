@@ -4,7 +4,7 @@
 .ac-timeline__lineBase {
   position: absolute;
   left: 12px;
-  top: 0;
+  top: var(--ac-line-cap, 29px);
   width: 2px;
   border-radius: 999px;
   background: rgba(0,0,0,0.14);
@@ -16,7 +16,7 @@
 .ac-timeline__lineFill {
   position: absolute;
   left: 12px;
-  top: 0;
+  top: var(--ac-line-cap, 29px);
   width: 2px;
   border-radius: 999px;
   background: linear-gradient(
@@ -31,10 +31,12 @@
 .ac-timeline__item {
   position: relative;
   padding-left: 44px;
-  padding-bottom: 22px;
+  padding-top: 10px;
+  padding-bottom: clamp(28px, 4vw, 56px);
   display: grid;
   grid-template-columns: var(--ac-title-col, 220px) minmax(0, 1fr);
   gap: 16px;
+  will-change: transform, opacity;
 }
 
 .ac-timeline__sticky {
@@ -65,17 +67,26 @@
   top: var(--ac-sticky-top, 84px);
 }
 
+
 .ac-timeline__title {
   font-weight: 800;
-  font-size: 18px;
+  font-size: var(--text-md);
   line-height: 1.1;
   margin: 0;
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  max-width: 100%;
+  white-space: normal;
 }
 
 .ac-timeline__dotWrap {
   position: absolute;
   left: 0;
-  top: 14px;
+  top: 18px;
   width: 26px;
   height: 26px;
   display: grid;
@@ -95,6 +106,21 @@
     box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.18);
   }
 }
+
+/* Current role highlight (must be AFTER dotOuter rules) */
+.ac-timeline .ac-timeline__item[data-current="true"] .ac-timeline__dotOuter {
+  box-shadow:
+    0 0 0 6px rgba(99, 102, 241, 0.34),
+    0 0 28px rgba(99, 102, 241, 0.22),
+    0 0 58px rgba(236, 72, 153, 0.14);
+}
+
+.ac-timeline .ac-timeline__item[data-current="true"] .ac-timeline__dotInner {
+  box-shadow:
+    0 0 0 3px rgba(236, 72, 153, 0.18),
+    0 0 16px rgba(236, 72, 153, 0.22);
+}
+
 
 .ac-timeline__dotInner {
   width: 10px;

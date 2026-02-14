@@ -1,0 +1,1 @@
+export type IconSpec = { pack: "si" | "tb"; name: string };

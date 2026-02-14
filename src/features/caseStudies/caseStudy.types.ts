@@ -1,4 +1,4 @@
-export type Project = {
+export type CaseStudy = {
   slug: string;
   name: string;
   oneLiner: string;

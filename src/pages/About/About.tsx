@@ -1,6 +1,7 @@
 import Card from "../../components/ui/Card";
 import Divider from "../../components/ui/Divider";
 import Tag from "../../components/ui/Tag";
+import SkillsGrid from "../../components/sections/SkillsGrid";
 import { profile } from "../../features/profile/profile.data";
 import { experiences } from "../../features/experience/experience.data";
 import { skillBuckets } from "../../features/skills/skills.data";
@@ -54,15 +55,8 @@ const About: React.FC = () => {
 
       <Card>
         <h2 className="h2">Skills snapshot</h2>
-        <div className="grid2" style={{ marginTop: 12 }}>
-          {skillBuckets.map((bucket) => (
-            <div key={bucket.title}>
-              <div style={{ fontWeight: 700 }}>{bucket.title}</div>
-              <div className="p" style={{ marginTop: 6 }}>
-                {bucket.items.join(", ")}
-              </div>
-            </div>
-          ))}
+        <div style={{ marginTop: 12 }}>
+          <SkillsGrid buckets={skillBuckets} />
         </div>
       </Card>
     </div>

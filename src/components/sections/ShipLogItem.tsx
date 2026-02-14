@@ -1,7 +1,7 @@
 import Card from "../ui/Card";
 import Tag from "../ui/Tag";
 import type { ShipLogItem } from "../../features/shiplog/shiplog.types";
-import { formatDate } from "../../lib/utils/formatDate";
+import { formatDate } from "../../lib/utils/data.util";
 
 type Props = { item: ShipLogItem };
 

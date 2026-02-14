@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import "../../styles/Timeline.css";
 
 export type TimelineEntry = {
@@ -27,6 +27,8 @@ const Timeline: React.FC<TimelineProps> = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const measureRef = useRef<HTMLDivElement | null>(null);
   const [contentHeight, setContentHeight] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
+  const lineCapPx = 29;
 
   useEffect(() => {
     if (!measureRef.current) return;
@@ -44,11 +46,17 @@ const Timeline: React.FC<TimelineProps> = ({
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 15%", "end 60%"],
+    offset: ["start 70%", "end 20%"],
   });
 
-  const lineHeight = useTransform(scrollYProgress, [0, 1], [0, contentHeight]);
+  const usableLineHeight = Math.max(contentHeight - lineCapPx * 2, 0);
+  const lineHeight = useTransform(scrollYProgress, [0, 1], [0, usableLineHeight]);
   const lineOpacity = useTransform(scrollYProgress, [0, 0.08], [0, 1]);
+  const baseOpacity = useTransform(scrollYProgress, [0, 0.12], [0, 1]);
+  const itemOffset = prefersReducedMotion ? 0 : 14;
+  const titleDur = prefersReducedMotion ? 0.18 : 0.28;
+  const contentDur = prefersReducedMotion ? 0.22 : 0.32;
+  const afterTitleGap = prefersReducedMotion ? 0.08 : 0.16;
 
   return (
     <div
@@ -59,11 +67,16 @@ const Timeline: React.FC<TimelineProps> = ({
         {
           ["--ac-sticky-top"]: `${stickyTopPx}px`,
           ["--ac-title-col"]: `${titleWidthPx}px`,
+          ["--ac-line-cap"]: `${lineCapPx}px`,
         } as React.CSSProperties
       }
     >
       <div className="ac-timeline__inner" ref={measureRef}>
-        <div className="ac-timeline__lineBase" style={{ height: contentHeight }} />
+        <motion.div
+          className="ac-timeline__lineBase"
+          style={{ height: usableLineHeight, opacity: baseOpacity }}
+          aria-hidden
+        />
 
         <motion.div
           className="ac-timeline__lineFill"
@@ -71,27 +84,50 @@ const Timeline: React.FC<TimelineProps> = ({
           aria-hidden
         />
 
-        {data.map((entry, idx) => (
-          <div key={`${entry.title}-${idx}`} className="ac-timeline__item">
-            <div className="ac-timeline__dotWrap" aria-hidden>
+        {data.map((entry, idx) => {
+          const rowDelay = prefersReducedMotion ? 0 : Math.min(idx * 0.06, 0.16);
+          const contentDelay = rowDelay + titleDur + afterTitleGap;
+
+          return (
+            <div
+              key={`${entry.title}-${idx}`}
+              className="ac-timeline__item"
+              data-current={idx === 0 ? "true" : "false"}
+            >
+              <div className="ac-timeline__dotWrap" aria-hidden>
+                <motion.div
+                  className="ac-timeline__dotOuter"
+                  initial={{ scale: 0.9, opacity: 0.7 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20, delay: rowDelay }}
+                  viewport={{ once: true, margin: "-20% 0px -60% 0px" }}
+                >
+                  <div className="ac-timeline__dotInner" />
+                </motion.div>
+              </div>
+
               <motion.div
-                className="ac-timeline__dotOuter"
-                initial={{ scale: 0.9, opacity: 0.7 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                viewport={{ once: true, margin: "-20% 0px -60% 0px" }}
+                className="ac-timeline__sticky"
+                initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -10 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: titleDur, ease: "easeOut", delay: rowDelay }}
+                viewport={{ once: true, margin: "-10% 0px -35% 0px" }}
               >
-                <div className="ac-timeline__dotInner" />
+                <div className="ac-timeline__title">{entry.title}</div>
+              </motion.div>
+
+              <motion.div
+                className="ac-timeline__content"
+                initial={{ opacity: 0, y: itemOffset }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: contentDur, ease: "easeOut", delay: contentDelay }}
+                viewport={{ once: true, margin: "-10% 0px -35% 0px" }}
+              >
+                {entry.content}
               </motion.div>
             </div>
-
-            <div className="ac-timeline__sticky">
-              <div className="ac-timeline__title">{entry.title}</div>
-            </div>
-
-            <div className="ac-timeline__content">{entry.content}</div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

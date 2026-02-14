@@ -1,38 +1,38 @@
 import { Link } from "react-router-dom";
 import Card from "../../components/ui/Card";
-import Button from "../../components/ui/Button";
 import Tag from "../../components/ui/Tag";
+import Button from "../../components/ui/Button";
 import Section from "../../components/ui/Section";
-import ProjectCard from "../../components/sections/ProjectCard";
+import CaseStudyCard from "../../components/sections/CaseStudyCard";
 import ExperienceTimelineSection from "../../components/sections/experience/ExperienceTimelineSection";
 import HomeHero from "../../components/sections/home/HeroHome";
+import SkillsGrid from "../../components/sections/SkillsGrid";
 import { useDocumentTitle } from "../../lib/hooks/useDocumentTitle";
 import { profile } from "../../features/profile/profile.data";
-import { projects } from "../../features/projects/project.data";
+import { caseStudies} from "../../features/caseStudies/caseStudy.data";
 import { experiences } from "../../features/experience/experience.data";
 import { skillBuckets } from "../../features/skills/skills.data";
 import { education } from "../../features/education/education.data";
 
 const Home: React.FC = () => {
   useDocumentTitle(`${profile.name} - Portfolio`);
-
-  const featuredProjects = projects.slice(0, 4);
+  const cs = caseStudies.filter((c) => c.featured).slice(0, 2);
 
   return (
-    <div className="sectionList">
+    <div className="sectionLis">
       <HomeHero />
 
       <Section className="grid">
         <div className="row" style={{ justifyContent: "space-between", alignItems: "baseline" }}>
-          <h2 className="h2">Featured Projects</h2>
+          <h2 className="h2">Case studies</h2>
           <Link to="/projects" className="p" style={{ fontSize: 14 }}>
             View all
           </Link>
         </div>
 
         <div className="grid2">
-          {featuredProjects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
+          {cs.map((caseStudy) => (
+            <CaseStudyCard key={caseStudy.slug} project={caseStudy} />
           ))}
         </div>
       </Section>
@@ -47,24 +47,14 @@ const Home: React.FC = () => {
 
         <ExperienceTimelineSection
           items={experiences}
-          timelineProps={{ stickyTitle: false, stickyTopPx: 110, titleWidthPx: 240 }}
+          limit={3}
+          timelineProps={{ stickyTitle: false, stickyTopPx: 110, titleWidthPx: 260 }}
         />
       </Section>
 
       <Section className="grid">
         <h2 className="h2">Skills</h2>
-        <div className="grid2">
-          {skillBuckets.map((bucket) => (
-            <Card key={bucket.title}>
-              <h3 style={{ margin: 0 }}>{bucket.title}</h3>
-              <div className="stack" style={{ marginTop: 10 }}>
-                {bucket.items.map((item) => (
-                  <Tag key={item} text={item} />
-                ))}
-              </div>
-            </Card>
-          ))}
-        </div>
+        <SkillsGrid buckets={skillBuckets} />
       </Section>
 
       <Section className="grid">

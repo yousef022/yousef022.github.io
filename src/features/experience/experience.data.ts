@@ -28,7 +28,7 @@ export const experiences: Experience[] = [
     ],
   },
   {
-    company: "CleanList.Ai",
+    company: "Cleanlist.ai",
     role: "Full-Stack Developer Intern",
     period: "Feb 2024 - Aug 2024",
     summary: "Developed an email validation system for generated user leads.",

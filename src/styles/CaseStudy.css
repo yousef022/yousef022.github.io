@@ -1,0 +1,86 @@
+/* Make sure this overrides .card padding if needed */
+.card.caseCard {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(16px, 2.2vw, 22px);
+}
+
+/* subtle glow background */
+.card.caseCard::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background:
+    radial-gradient(420px 240px at 10% 0%, rgba(120, 100, 255, 0.10), transparent 60%),
+    radial-gradient(420px 240px at 90% 0%, rgba(0, 220, 255, 0.07), transparent 55%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.card.caseCard > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Top row: title must be allowed to grow */
+.caseTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.caseTitle {
+  flex: 1 1 auto;   /* IMPORTANT: take remaining width */
+  min-width: 0;     /* IMPORTANT: allow text to wrap correctly */
+}
+
+/* Make title feel “card title”, not “hero” */
+.caseName {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 780;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+/* Control the one-liner (don’t use global .p here) */
+.caseOneLiner {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: var(--text-base);
+  line-height: 1.55;
+  max-width: 62ch;
+
+  /* clamp so it can’t dominate the card */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.caseCta {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+
+.caseStack {
+  margin-top: 12px;
+  gap: 6px; /* tighter than global stack */
+}
+
+/* nicer hover (optional) */
+.card.caseCard:hover {
+  transform: translateY(-1px);
+  transition: transform 160ms ease;
+}
+
+@media (max-width: 520px) {
+  .caseTop {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+
