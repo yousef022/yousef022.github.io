@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import NavPill from "../ui/NavPill";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 const TopNav: React.FC = () => {
   type Theme = "dark" | "light";
 
+  const location = useLocation();
   const [navWrapEl, setNavWrapEl] = useState<HTMLElement | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const getInitialTheme = (): Theme => {
     const stored = localStorage.getItem("theme");
@@ -23,6 +25,10 @@ const TopNav: React.FC = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname, location.hash]);
+
   const toggleTheme = () => {
     setTheme((t) => (t === "dark" ? "light" : "dark"));
   };
@@ -32,42 +38,71 @@ const TopNav: React.FC = () => {
       color: isActive ? "var(--text)" : "var(--muted)",
     }) as React.CSSProperties;
 
+  const navLinks = [
+    { to: "/", label: "Home", end: true },
+    { to: "/projects", label: "Projects", end: false },
+    { to: "/about", label: "About", end: false },
+    { to: "/contact", label: "Contact", end: false },
+  ] as const;
+
   return (
     <header style={{ borderBottom: "1px solid var(--border)" }}>
       <div className="bar">
-        <div className="container navBar">
-          <div className="navWrap" ref={setNavWrapEl}>
-            <nav className="nav">
-              <NavLink to="/" style={linkStyle} end>
-                Home
-              </NavLink>
-              <NavLink to="/projects" style={linkStyle}>
-                Projects
-              </NavLink>
-              <NavLink to="/about" style={linkStyle}>
-                About
-              </NavLink>
-              <NavLink to="/contact" style={linkStyle}>
-                Contact
-              </NavLink>
-            </nav>
+        <div className="container">
+          <div className="navBar">
+            <div className="navDesktop navWrap" ref={setNavWrapEl}>
+              <nav className="nav">
+                {navLinks.map((link) => (
+                  <NavLink key={link.to} to={link.to} style={linkStyle} end={link.end}>
+                    {link.label}
+                  </NavLink>
+                ))}
+              </nav>
 
-            <NavPill containerEl={navWrapEl} />
+              <NavPill containerEl={navWrapEl} />
+            </div>
+
+            <button
+              type="button"
+              className="navMenuBtn"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-nav-panel"
+              onClick={() => setMobileOpen((open) => !open)}
+            >
+              <span className="navMenuIcon" aria-hidden>
+                <span />
+                <span />
+                <span />
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="themeToggle"
+              title="Toggle theme"
+              aria-label="Toggle theme"
+              aria-pressed={theme === "light"}
+            >
+              <span className="themeToggleLabel">{theme === "dark" ? "Dark" : "Light"}</span>
+              <span className="themeToggleTrack" aria-hidden="true">
+                <span className="themeToggleThumb" />
+              </span>
+            </button>
           </div>
 
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="themeToggle"
-            title="Toggle theme"
-            aria-label="Toggle theme"
-            aria-pressed={theme === "light"}
-          >
-            <span className="themeToggleLabel">{theme === "dark" ? "Dark" : "Light"}</span>
-            <span className="themeToggleTrack" aria-hidden="true">
-              <span className="themeToggleThumb" />
-            </span>
-          </button>
+          <div id="mobile-nav-panel" className={`navMobilePanel${mobileOpen ? " isOpen" : ""}`}>
+            <div className="navMobilePanelInner">
+              <nav className="nav nav--dropdown">
+                {navLinks.map((link) => (
+                  <NavLink key={`mobile-${link.to}`} to={link.to} end={link.end} style={linkStyle}>
+                    {link.label}
+                  </NavLink>
+                ))}
+              </nav>
+            </div>
+          </div>
         </div>
       </div>
     </header>

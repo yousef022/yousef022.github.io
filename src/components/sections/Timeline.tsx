@@ -3,7 +3,8 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import "../../styles/Timeline.css";
 
 export type TimelineEntry = {
-  title: string;
+  id?: string;
+  title: React.ReactNode;
   content: React.ReactNode;
 };
 
@@ -56,7 +57,8 @@ const Timeline: React.FC<TimelineProps> = ({
   const itemOffset = prefersReducedMotion ? 0 : 14;
   const titleDur = prefersReducedMotion ? 0.18 : 0.28;
   const contentDur = prefersReducedMotion ? 0.22 : 0.32;
-  const afterTitleGap = prefersReducedMotion ? 0.08 : 0.16;
+  const afterTitleGap = prefersReducedMotion ? 0.22 : 0.35;
+  const rowViewport = { once: false, amount: 0.28, margin: "0px 0px -12% 0px" } as const;
 
   return (
     <div
@@ -89,18 +91,14 @@ const Timeline: React.FC<TimelineProps> = ({
           const contentDelay = rowDelay + titleDur + afterTitleGap;
 
           return (
-            <div
-              key={`${entry.title}-${idx}`}
-              className="ac-timeline__item"
-              data-current={idx === 0 ? "true" : "false"}
-            >
+            <div key={entry.id ?? `timeline-row-${idx}`} className="ac-timeline__item" data-current={idx === 0 ? "true" : "false"}>
               <div className="ac-timeline__dotWrap" aria-hidden>
                 <motion.div
                   className="ac-timeline__dotOuter"
                   initial={{ scale: 0.9, opacity: 0.7 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20, delay: rowDelay }}
-                  viewport={{ once: true, margin: "-20% 0px -60% 0px" }}
+                  viewport={rowViewport}
                 >
                   <div className="ac-timeline__dotInner" />
                 </motion.div>
@@ -111,7 +109,7 @@ const Timeline: React.FC<TimelineProps> = ({
                 initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -10 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: titleDur, ease: "easeOut", delay: rowDelay }}
-                viewport={{ once: true, margin: "-10% 0px -35% 0px" }}
+                viewport={rowViewport}
               >
                 <div className="ac-timeline__title">{entry.title}</div>
               </motion.div>
@@ -121,7 +119,7 @@ const Timeline: React.FC<TimelineProps> = ({
                 initial={{ opacity: 0, y: itemOffset }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: contentDur, ease: "easeOut", delay: contentDelay }}
-                viewport={{ once: true, margin: "-10% 0px -35% 0px" }}
+                viewport={rowViewport}
               >
                 {entry.content}
               </motion.div>

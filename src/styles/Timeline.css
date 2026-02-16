@@ -1,4 +1,12 @@
-.ac-timeline { position: relative; }
+.ac-timeline {
+  position: relative;
+  --company-logo-size: clamp(22px, 2.2vw, 40px);
+  --company-logo-radius: clamp(7px, 0.7vw, 12px);
+  --company-logo-gap: clamp(9px, 0.75vw, 14px);
+  --company-logo-font: clamp(0.66rem, 0.56rem + 0.36vw, 0.96rem);
+  --company-logo-img-size: calc(var(--company-logo-size) * 0.84);
+  --company-logo-img-scale: 1.18;
+}
 .ac-timeline__inner { position: relative; }
 
 .ac-timeline__lineBase {
@@ -74,13 +82,59 @@
   line-height: 1.1;
   margin: 0;
   display: inline-block;
-  padding: 6px 10px;
+  width: fit-content;
+  padding: clamp(6px, 0.45vw, 9px) clamp(10px, 0.8vw, 14px);
   border-radius: 999px;
   border: 1px solid var(--border);
   background: var(--surface2);
   color: var(--text);
   max-width: 100%;
   white-space: normal;
+}
+
+.ac-timeline__titleInner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--company-logo-gap);
+  max-width: 100%;
+  min-width: 0;
+}
+
+.ac-timeline__companyName {
+  display: inline-block;
+  min-width: 0;
+  max-width: clamp(11ch, 18vw, 10ch);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.ac-timeline__companyLogo {
+  --company-logo-bg: rgba(120, 100, 255, 0.24);
+  --company-logo-fg: rgba(231, 234, 241, 0.95);
+  width: var(--company-logo-size);
+  height: var(--company-logo-size);
+  border-radius: var(--company-logo-radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  font-size: var(--company-logo-font);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  background: var(--company-logo-bg);
+  color: var(--company-logo-fg);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  overflow: hidden;
+}
+
+.ac-timeline__companyLogoImg {
+  width: var(--company-logo-img-size);
+  height: var(--company-logo-img-size);
+  object-fit: contain;
+  display: block;
+  transform: scale(var(--company-logo-img-scale));
+  transform-origin: center;
 }
 
 .ac-timeline__dotWrap {

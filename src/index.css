@@ -370,6 +370,10 @@ html[data-theme="light"] body {
     position: relative;
   }
 
+  .navDesktop {
+    position: relative;
+  }
+
   .nav {
     position: relative;
     display: flex;
@@ -497,6 +501,56 @@ html[data-theme="light"] body {
     letter-spacing: 0.02em;
   }
 
+  .navMenuBtn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    width: 38px;
+    padding: 0;
+    border-radius: 12px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface2);
+    color: var(--text);
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .navMenuIcon {
+    display: inline-grid;
+    gap: 3px;
+  }
+
+  .navMenuIcon span {
+    width: 14px;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+    display: block;
+  }
+
+  .navMobilePanel {
+    display: none;
+  }
+
+  .navMobilePanelInner {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface2);
+    padding: 8px;
+  }
+
+  .nav--dropdown {
+    display: grid;
+    gap: 6px;
+  }
+
+  .nav--dropdown a {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0 12px;
+  }
+
   .themeToggleTrack {
     position: relative;
     width: 36px;
@@ -528,6 +582,33 @@ html[data-theme="light"] body {
     .themeToggle,
     .themeToggleThumb {
       transition: none;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .navDesktop {
+      display: none;
+    }
+
+    .navMenuBtn {
+      display: inline-flex;
+    }
+
+    .navBar {
+      gap: 10px;
+    }
+
+    .themeToggle {
+      padding: 0 8px;
+    }
+
+    .themeToggleLabel {
+      display: none;
+    }
+
+    .navMobilePanel.isOpen {
+      display: block;
+      margin-top: 10px;
     }
   }
 

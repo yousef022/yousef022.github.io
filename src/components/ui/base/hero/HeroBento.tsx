@@ -126,10 +126,15 @@ const HeroBento: React.FC<HeroBentoProps> = ({
             <div className="hbRight">
               <div className="hbStats">
                 {stats.map((st) => (
-                  <div key={st.label} className="hbStat">
+                  <div
+                    key={st.label}
+                    className={`hbStat hbStat--${st.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+                  >
                     {st.icon ? <div className="hbStatIcon">{st.icon}</div> : null}
                     <div className="hbStatMeta">
-                      <div className="hbStatValue">{st.value}</div>
+                      <div className={`hbStatValue${st.value.length > 14 ? " hbStatValue--long" : ""}`}>
+                        {st.value}
+                      </div>
                       <div className="hbStatLabel">{st.label}</div>
                       {st.sub ? <div className="hbStatSub">{st.sub}</div> : null}
                     </div>
