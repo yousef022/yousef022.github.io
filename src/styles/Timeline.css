@@ -9,7 +9,7 @@
 }
 .ac-timeline__inner { position: relative; }
 
-.ac-timeline__lineBase {
+/* .ac-timeline__lineBase {
   position: absolute;
   left: 12px;
   top: var(--ac-line-cap, 29px);
@@ -34,16 +34,16 @@
     rgba(236, 72, 153, 0.9),
     rgba(236, 72, 153, 0)
   );
-}
+} */
 
 .ac-timeline__item {
   position: relative;
   padding-left: 44px;
-  padding-top: 10px;
-  padding-bottom: clamp(28px, 4vw, 56px);
+  padding-top: 18px;
+  padding-bottom: clamp(68px, 8vw, 128px);
   display: grid;
   grid-template-columns: var(--ac-title-col, 220px) minmax(0, 1fr);
-  gap: 16px;
+  gap: clamp(24px, 2.4vw, 36px);
   will-change: transform, opacity;
 }
 
@@ -98,6 +98,35 @@
   gap: var(--company-logo-gap);
   max-width: 100%;
   min-width: 0;
+}
+
+/* little “head” that moves with the fill (helps sell the build) */
+.ac-timeline__lineHead {
+  position: absolute;
+  left: 12px;
+  top: calc(var(--ac-line-cap, 29px) - 5px);
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  transform: translateX(-4px);
+  background: rgba(99, 102, 241, 0.9);
+  box-shadow:
+    0 0 0 6px rgba(99, 102, 241, 0.10),
+    0 0 18px rgba(236, 72, 153, 0.16);
+  pointer-events: none;
+}
+
+/* ripple ring for the “click” */
+.ac-timeline__dotRipple {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 2px solid rgba(99, 102, 241, 0.55);
+  box-shadow:
+    0 0 0 6px rgba(99, 102, 241, 0.10),
+    0 0 22px rgba(236, 72, 153, 0.12);
+  pointer-events: none;
 }
 
 .ac-timeline__companyName {
@@ -190,3 +219,42 @@
   .ac-timeline__item { grid-template-columns: 1fr; }
   .ac-timeline__sticky { position: static !important; }
 }
+
+/* segment pieces that build one-by-one */
+.ac-timeline__seg {
+  position: absolute;
+  left: 12px;
+  width: 2px;
+  border-radius: 999px;
+
+  /* same vibe as your fill line */
+  background: linear-gradient(
+    to bottom,
+    rgba(99, 102, 241, 0.0),
+    rgba(99, 102, 241, 0.95),
+    rgba(236, 72, 153, 0.95),
+    rgba(236, 72, 153, 0.0)
+  );
+
+  transform-origin: top;
+  transform: scaleY(0); /* IMPORTANT: starts invisible */
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* ripple ring for the “click” */
+.ac-timeline__dotRipple {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 2px solid rgba(99, 102, 241, 0.55);
+  box-shadow:
+    0 0 0 6px rgba(99, 102, 241, 0.10),
+    0 0 22px rgba(236, 72, 153, 0.12);
+  pointer-events: none;
+}
+
+
+
+

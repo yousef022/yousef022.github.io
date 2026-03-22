@@ -1,5 +1,5 @@
 import Card from "../../components/ui/Card";
-import Divider from "../../components/ui/Divider";
+import SectionHeader from "../../components/ui/SectionHeader";
 import Tag from "../../components/ui/Tag";
 import SkillsGrid from "../../components/sections/SkillsGrid";
 import { profile } from "../../features/profile/profile.data";
@@ -18,10 +18,8 @@ const About: React.FC = () => {
         </h1>
         <p className="p">{profile.pitch}</p>
 
-        <Divider />
-
-        <h2 className="h2">How I work</h2>
-        <ul style={{ marginTop: 10, lineHeight: 1.7 }}>
+        <SectionHeader className="sectionHeader--inset" title="How I work" />
+        <ul style={{ marginTop: 12, lineHeight: 1.7 }}>
           <li className="p">I prioritize clarity, reliability, and delivery.</li>
           <li className="p">I ship quickly and keep systems maintainable.</li>
           <li className="p">I like tight feedback loops with product teams.</li>
@@ -30,8 +28,8 @@ const About: React.FC = () => {
 
       <div className="grid2">
         <Card>
-          <h2 className="h2">Focus areas</h2>
-          <div className="stack" style={{ marginTop: 10 }}>
+          <SectionHeader title="Focus areas" />
+          <div className="stack" style={{ marginTop: 12 }}>
             {profile.focus.map((item) => (
               <Tag key={item} text={item} />
             ))}
@@ -39,8 +37,8 @@ const About: React.FC = () => {
         </Card>
 
         <Card>
-          <h2 className="h2">Recent experience</h2>
-          <div style={{ marginTop: 10 }}>
+          <SectionHeader title="Recent experience" />
+          <div style={{ marginTop: 12 }}>
             {experiences.slice(0, 2).map((item) => (
               <div key={item.company} style={{ marginBottom: 10 }}>
                 <div style={{ fontWeight: 700 }}>{item.company}</div>
@@ -54,7 +52,7 @@ const About: React.FC = () => {
       </div>
 
       <Card>
-        <h2 className="h2">Skills snapshot</h2>
+        <SectionHeader title="Skills snapshot" />
         <div style={{ marginTop: 12 }}>
           <SkillsGrid buckets={skillBuckets} />
         </div>

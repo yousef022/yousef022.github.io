@@ -1,17 +1,15 @@
-type Props = { text: string };
+import "../../styles/Tag.css";
 
-const Tag: React.FC<Props> = ({ text }) => (
-  <span
-    style={{
-      border: "1px solid var(--border)",
-      background: "var(--surface2)",
-      padding: "5px 10px",
-      borderRadius: 999,
-      fontSize: 12,
-      color: "var(--text)",
-    }}
-  >
-    {text}
+type Props = {
+  text: string;
+  icon?: React.ReactNode;
+  className?: string;
+};
+
+const Tag: React.FC<Props> = ({ text, icon, className }) => (
+  <span className={`uiTag${className ? ` ${className}` : ""}`}>
+    {icon ? <span className="uiTag__icon" aria-hidden>{icon}</span> : null}
+    <span className="uiTag__label">{text}</span>
   </span>
 );
 

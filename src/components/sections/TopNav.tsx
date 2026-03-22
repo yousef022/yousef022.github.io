@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import NavPill from "../ui/NavPill";
 import { NavLink, useLocation } from "react-router-dom";
+import { TbMoon, TbSun } from "react-icons/tb";
+import NavPill from "../ui/NavPill";
 
 const TopNav: React.FC = () => {
   type Theme = "dark" | "light";
@@ -81,14 +82,11 @@ const TopNav: React.FC = () => {
               type="button"
               onClick={toggleTheme}
               className="themeToggle"
-              title="Toggle theme"
-              aria-label="Toggle theme"
+              title={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+              aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
               aria-pressed={theme === "light"}
             >
-              <span className="themeToggleLabel">{theme === "dark" ? "Dark" : "Light"}</span>
-              <span className="themeToggleTrack" aria-hidden="true">
-                <span className="themeToggleThumb" />
-              </span>
+              {theme === "dark" ? <TbSun aria-hidden="true" /> : <TbMoon aria-hidden="true" />}
             </button>
           </div>
 

@@ -1,13 +1,13 @@
-import Card from "../ui/Card";
-import Tag from "../ui/Tag";
-import type { Project } from "../../features/projects/project.types";
+import Card from "../../ui/Card";
+import Tag from "../../ui/Tag";
+import type { Project } from "../../../features/projects/project.types";
 import { Link } from "react-router-dom";
-import "../../styles/CaseStudy.css"
+import "../../../styles/CaseStudy.css";
 
 type Props = {
   project: Project;
   highlightCount?: number; // default 2
-  stackCount?: number;     // default 5
+  stackCount?: number; // default 5
 };
 
 const CaseStudyCard: React.FC<Props> = ({ project, highlightCount = 2, stackCount = 5 }) => (

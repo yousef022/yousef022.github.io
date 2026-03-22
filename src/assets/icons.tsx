@@ -95,3 +95,105 @@ export const PinIcon = () => (
     <path d="M12 11a2 2 0 1 0-2-2 2 2 0 0 0 2 2Z" fill="none" stroke="currentColor" strokeWidth="1.8" />
   </Icon>
 );
+
+export const SparkIcon = () => (
+  <Icon>
+    <path
+      d="M12 3.5 13.75 8.25 18.5 10 13.75 11.75 12 16.5 10.25 11.75 5.5 10 10.25 8.25 12 3.5Z"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinejoin="round"
+    />
+  </Icon>
+);
+
+export const GridIcon = () => (
+  <Icon>
+    <rect x="4" y="4" width="6" height="6" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+    <rect x="14" y="4" width="6" height="6" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+    <rect x="4" y="14" width="6" height="6" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+    <rect x="14" y="14" width="6" height="6" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+  </Icon>
+);
+
+export const StackIcon = () => (
+  <Icon>
+    <path d="M12 4 4 8l8 4 8-4-8-4Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+    <path d="M6 12.5 12 15.5l6-3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M6 16.5 12 19.5l6-3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+  </Icon>
+);
+
+// export const RocketIcon = () => (
+//   <Icon>
+//     <path
+//       d="M13.6 5.1c2.3.1 4 .8 5.3 2.1-1.3 1.3-3 2-5.3 2.1l-4.2 4.2-2.8-2.8 4.2-4.2c.1-2.3.8-4 2.8-5.3Z"
+//       fill="none"
+//       stroke="currentColor"
+//       strokeWidth="1.8"
+//       strokeLinejoin="round"
+//     />
+//     <circle cx="14.3" cy="8.6" r="1.35" fill="none" stroke="currentColor" strokeWidth="1.6" />
+//     <path d="M6.6 10.7 4.4 12.9" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+//     <path
+//       d="M4.5 19.5c1.6-.2 3-.9 4.1-2 1.1-1.1 1.8-2.5 2-4.1-1.6.2-3 .9-4.1 2-1.1 1.1-1.8 2.5-2 4.1Z"
+//       fill="none"
+//       stroke="currentColor"
+//       strokeWidth="1.8"
+//       strokeLinejoin="round"
+//     />
+//   </Icon>
+// );
+
+export const RocketIcon = () => (
+  <Icon viewBox="0 0 24 24">
+    {/* body */}
+    <path
+      d="M14.5 4.5c2.5.5 4.5 2.5 5 5L13 16l-5-5 6.5-6.5Z"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+
+    {/* window */}
+    <circle
+      cx="14.25"
+      cy="9.75"
+      r="1.35"
+      stroke="currentColor"
+      strokeWidth="1.8"
+    />
+
+    {/* left fin */}
+    <path
+      d="M8 11l-2.75.75a1.2 1.2 0 0 0-.63 1.98L6.5 15.6"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+
+    {/* right fin */}
+    <path
+      d="M13 16l.75 2.75a1.2 1.2 0 0 0 1.98.63l1.87-1.88"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+
+    {/* flame */}
+    <path
+      d="M6.25 17.75c.2-1.15.74-2.19 1.56-3.01.82-.82 1.86-1.36 3.01-1.56-.2 1.15-.74 2.19-1.56 3.01-.82.82-1.86 1.36-3.01 1.56Z"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Icon>
+);
+
+
+

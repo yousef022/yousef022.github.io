@@ -4,7 +4,7 @@ export const profile = {
   location: "Mississauga, Ontario",
   pitch:
     "Software developer focused on product-grade web apps, clean architecture, and fast, reliable shipping.",
-  focus: ["Product UI", "Design systems", "Full-stack delivery", "Startups"],
+  focus: ["Modern UI", "Scalable systems", "Full-stack delivery", "Startups"],
   links: [
     { label: "GitHub", href: "https://github.com/yousef022" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/yousefosman/" },

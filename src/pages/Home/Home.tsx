@@ -1,15 +1,15 @@
-import { Link } from "react-router-dom";
 import Card from "../../components/ui/Card";
 import Tag from "../../components/ui/Tag";
 import Button from "../../components/ui/Button";
 import Section from "../../components/ui/Section";
-import CaseStudyCard from "../../components/sections/CaseStudyCard";
+import SectionHeader from "../../components/ui/SectionHeader";
+import CaseStudyCard from "../../components/sections/caseStudies/CaseStudyCard";
 import ExperienceTimelineSection from "../../components/sections/experience/ExperienceTimelineSection";
 import HomeHero from "../../components/sections/home/HeroHome";
 import SkillsGrid from "../../components/sections/SkillsGrid";
 import { useDocumentTitle } from "../../lib/hooks/useDocumentTitle";
 import { profile } from "../../features/profile/profile.data";
-import { caseStudies} from "../../features/caseStudies/caseStudy.data";
+import { caseStudies } from "../../features/caseStudies/caseStudy.data";
 import { experiences } from "../../features/experience/experience.data";
 import { skillBuckets } from "../../features/skills/skills.data";
 import { education } from "../../features/education/education.data";
@@ -23,12 +23,7 @@ const Home: React.FC = () => {
       <HomeHero />
 
       <Section className="grid">
-        <div className="row" style={{ justifyContent: "space-between", alignItems: "baseline" }}>
-          <h2 className="h2">Case studies</h2>
-          <Link to="/projects" className="p" style={{ fontSize: 14 }}>
-            View all
-          </Link>
-        </div>
+        <SectionHeader title="Case studies" actionLabel="View all" actionTo="/projects" />
 
         <div className="grid2">
           {cs.map((caseStudy) => (
@@ -38,12 +33,7 @@ const Home: React.FC = () => {
       </Section>
 
       <Section className="grid">
-        <div className="row" style={{ justifyContent: "space-between", alignItems: "baseline" }}>
-          <h2 className="h2">Experience</h2>
-          <Link to="/about" className="p" style={{ fontSize: 14 }}>
-            Full timeline
-          </Link>
-        </div>
+        <SectionHeader title="Experience" actionLabel="Full timeline" actionTo="/about" />
 
         <ExperienceTimelineSection
           items={experiences}
@@ -53,12 +43,12 @@ const Home: React.FC = () => {
       </Section>
 
       <Section className="grid">
-        <h2 className="h2">Skills</h2>
+        <SectionHeader title="Skills" />
         <SkillsGrid buckets={skillBuckets} />
       </Section>
 
       <Section className="grid">
-        <h2 className="h2">Education</h2>
+        <SectionHeader title="Education" />
         <div className="grid2">
           {education.map((item) => (
             <Card key={item.school} className="eduCard">
