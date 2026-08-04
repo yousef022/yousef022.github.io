@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
+import { TbArrowUpRight } from "react-icons/tb";
 import Card from "../../Card";
-import Button from "../../Button";
 import Tag from "../../Tag";
 import "../../../../styles/HeroBento.css";
 
@@ -19,22 +19,24 @@ export type HeroBentoStat = {
   icon?: React.ReactNode;
 };
 
+export type HeroBentoChip = {
+  label: string;
+  icon?: React.ReactNode;
+};
+
 export type HeroBentoProps = {
-  title: string;          // usually name
-  subtitle?: string;      // usually role
+  title: string;
+  subtitle?: string;
   tagline: string;
-
-  avatarText?: string;    // e.g. initials; if omitted, computed from title
-
+  avatarText?: string;
   primaryCta?: HeroBentoCta;
   secondaryCta?: HeroBentoCta;
-
-  chips?: readonly string[];       // 0..n (we'll render up to 4)
+  chips?: readonly HeroBentoChip[];
   socials?: HeroBentoSocial[];
   stats?: HeroBentoStat[];
-
-  footerBadges?: string[]; // optional “micro” row
+  footerBadges?: string[];
   className?: string;
+  avatarSrc?: string;
 };
 
 const HeroBento: React.FC<HeroBentoProps> = ({
@@ -49,6 +51,7 @@ const HeroBento: React.FC<HeroBentoProps> = ({
   stats = [],
   footerBadges = [],
   className,
+  avatarSrc,
 }) => {
   const initials = useMemo(() => {
     if (avatarText?.trim()) return avatarText.trim().slice(0, 2).toUpperCase();
@@ -67,7 +70,11 @@ const HeroBento: React.FC<HeroBentoProps> = ({
         <div className="hbTop">
           <div className="hbId">
             <div className="hbAvatar" aria-hidden>
-              {initials}
+              {avatarSrc ? (
+                <img className="hbAvatarImg" src={avatarSrc} alt="" />
+              ) : (
+                <div className="hbAvatarText">{initials}</div>
+              )}
             </div>
 
             <div className="hbTitle">
@@ -101,15 +108,26 @@ const HeroBento: React.FC<HeroBentoProps> = ({
 
             {(primaryCta || secondaryCta) && (
               <div className="hbActions">
-                {primaryCta ? <Button href={primaryCta.href}>{primaryCta.label}</Button> : null}
-                {secondaryCta ? <Button href={secondaryCta.href}>{secondaryCta.label}</Button> : null}
+                {primaryCta ? (
+                  <a href={primaryCta.href} className="hbPrimaryCta">
+                    <span className="hbPrimaryCtaLabel">{primaryCta.label}</span>
+                    <span className="hbPrimaryCtaIcon" aria-hidden="true">
+                      <TbArrowUpRight />
+                    </span>
+                  </a>
+                ) : null}
+                {secondaryCta ? (
+                  <a href={secondaryCta.href} className="hbSecondaryLink">
+                    {secondaryCta.label}
+                  </a>
+                ) : null}
               </div>
             )}
 
             {chips.length ? (
               <div className="hbChips">
-                {chips.slice(0, 4).map((c) => (
-                  <Tag key={c} text={c} />
+                {chips.slice(0, 4).map((chip) => (
+                  <Tag key={chip.label} text={chip.label} icon={chip.icon} className="hbChipTag" />
                 ))}
               </div>
             ) : null}
@@ -119,10 +137,15 @@ const HeroBento: React.FC<HeroBentoProps> = ({
             <div className="hbRight">
               <div className="hbStats">
                 {stats.map((st) => (
-                  <div key={st.label} className="hbStat">
+                  <div
+                    key={st.label}
+                    className={`hbStat hbStat--${st.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+                  >
                     {st.icon ? <div className="hbStatIcon">{st.icon}</div> : null}
                     <div className="hbStatMeta">
-                      <div className="hbStatValue">{st.value}</div>
+                      <div className={`hbStatValue${st.value.length > 14 ? " hbStatValue--long" : ""}`}>
+                        {st.value}
+                      </div>
                       <div className="hbStatLabel">{st.label}</div>
                       {st.sub ? <div className="hbStatSub">{st.sub}</div> : null}
                     </div>

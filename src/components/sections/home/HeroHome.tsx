@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { TbLayoutGrid, TbRocket, TbSparkles, TbStack2 } from "react-icons/tb";
 import Section from "../../ui/Section";
 import HeroBento from "../../ui/base/hero/HeroBento";
 import { profile } from "../../../features/profile/profile.data";
@@ -12,10 +13,9 @@ import {
   LayersIcon,
   PinIcon,
 } from "../../../assets/icons";
+import yoMark from "../../../assets/A_YO.svg?url";
 
 const HomeHero: React.FC = () => {
-  const emailLink = profile.links.find((l) => l.label === "Email");
-
   const socials = useMemo(
     () =>
       profile.links
@@ -26,6 +26,19 @@ const HomeHero: React.FC = () => {
           icon:
             l.label === "GitHub" ? <GithubIcon /> : l.label === "LinkedIn" ? <LinkedInIcon /> : <MailIcon />,
         })),
+    [],
+  );
+
+  const focusChips = useMemo(
+    () =>
+      profile.focus.map((label) => ({
+        label,
+        icon:
+          label === "Modern UI" ? <TbSparkles /> :
+          label === "Scalable systems" ? <TbLayoutGrid /> :
+          label === "Full-stack delivery" ? <TbStack2 /> :
+          label === "Startups" ? <TbRocket /> : undefined,
+      })),
     [],
   );
 
@@ -44,13 +57,12 @@ const HomeHero: React.FC = () => {
       <HeroBento
         title={profile.name}
         subtitle={profile.role}
-        tagline="Shipping product-grade web & mobile apps for startups."
-        chips={profile.focus}
+        tagline="Shipping product-grade apps & systems for startups."
+        chips={focusChips}
         socials={socials}
         stats={stats}
+        avatarSrc={yoMark}
         primaryCta={{ label: "View Projects", href: "/#/projects" }}
-        secondaryCta={emailLink ? { label: "Contact", href: emailLink.href } : undefined}
-        footerBadges={["Open to startup roles", "Fast shipping • Clean systems"]}
       />
     </Section>
   );

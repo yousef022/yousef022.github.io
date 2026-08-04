@@ -1,0 +1,31 @@
+.uiTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.uiTag__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  opacity: 0.92;
+}
+
+.uiTag__icon svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.uiTag__label {
+  display: inline-block;
+}

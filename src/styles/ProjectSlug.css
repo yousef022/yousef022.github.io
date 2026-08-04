@@ -1,0 +1,84 @@
+/* --- Case Study (Project detail) --- */
+.caseGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 360px);
+  gap: 14px;
+}
+
+@media (max-width: 920px) {
+  .caseGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.caseHeaderCard {
+  position: relative;
+  overflow: hidden;
+}
+
+.caseHeaderCard::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background:
+    radial-gradient(520px 220px at 10% 0%, rgba(120, 100, 255, 0.12), transparent 60%),
+    radial-gradient(420px 220px at 85% 0%, rgba(0, 220, 255, 0.08), transparent 55%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.caseHeaderCard > * { position: relative; z-index: 1; }
+
+.caseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+@media (max-width: 720px) {
+  .caseHeader {
+    flex-direction: column;
+  }
+}
+
+.caseTitle {
+  margin: 0;
+  font-size: var(--text-3xl);
+}
+
+.caseSubtitle {
+  margin-top: 8px;
+  max-width: 70ch;
+}
+
+.caseStackRow {
+  margin-top: 12px;
+}
+
+.caseHeaderActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.caseH3 {
+  margin: 0;
+}
+
+.caseList {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: rgba(231,234,241,0.9);
+  line-height: 1.6;
+  display: grid;
+  gap: 8px;
+}
+
+.caseLinks {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+}

@@ -1,10 +1,18 @@
-.ac-timeline { position: relative; }
+.ac-timeline {
+  position: relative;
+  --company-logo-size: clamp(22px, 2.2vw, 40px);
+  --company-logo-radius: clamp(7px, 0.7vw, 12px);
+  --company-logo-gap: clamp(9px, 0.75vw, 14px);
+  --company-logo-font: clamp(0.66rem, 0.56rem + 0.36vw, 0.96rem);
+  --company-logo-img-size: calc(var(--company-logo-size) * 0.84);
+  --company-logo-img-scale: 1.18;
+}
 .ac-timeline__inner { position: relative; }
 
-.ac-timeline__lineBase {
+/* .ac-timeline__lineBase {
   position: absolute;
   left: 12px;
-  top: 0;
+  top: var(--ac-line-cap, 29px);
   width: 2px;
   border-radius: 999px;
   background: rgba(0,0,0,0.14);
@@ -16,7 +24,7 @@
 .ac-timeline__lineFill {
   position: absolute;
   left: 12px;
-  top: 0;
+  top: var(--ac-line-cap, 29px);
   width: 2px;
   border-radius: 999px;
   background: linear-gradient(
@@ -26,15 +34,17 @@
     rgba(236, 72, 153, 0.9),
     rgba(236, 72, 153, 0)
   );
-}
+} */
 
 .ac-timeline__item {
   position: relative;
   padding-left: 44px;
-  padding-bottom: 22px;
+  padding-top: 18px;
+  padding-bottom: clamp(68px, 8vw, 128px);
   display: grid;
   grid-template-columns: var(--ac-title-col, 220px) minmax(0, 1fr);
-  gap: 16px;
+  gap: clamp(24px, 2.4vw, 36px);
+  will-change: transform, opacity;
 }
 
 .ac-timeline__sticky {
@@ -65,17 +75,101 @@
   top: var(--ac-sticky-top, 84px);
 }
 
+
 .ac-timeline__title {
   font-weight: 800;
-  font-size: 18px;
+  font-size: var(--text-md);
   line-height: 1.1;
   margin: 0;
+  display: inline-block;
+  width: fit-content;
+  padding: clamp(6px, 0.45vw, 9px) clamp(10px, 0.8vw, 14px);
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  max-width: 100%;
+  white-space: normal;
+}
+
+.ac-timeline__titleInner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--company-logo-gap);
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* little “head” that moves with the fill (helps sell the build) */
+.ac-timeline__lineHead {
+  position: absolute;
+  left: 12px;
+  top: calc(var(--ac-line-cap, 29px) - 5px);
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  transform: translateX(-4px);
+  background: rgba(99, 102, 241, 0.9);
+  box-shadow:
+    0 0 0 6px rgba(99, 102, 241, 0.10),
+    0 0 18px rgba(236, 72, 153, 0.16);
+  pointer-events: none;
+}
+
+/* ripple ring for the “click” */
+.ac-timeline__dotRipple {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 2px solid rgba(99, 102, 241, 0.55);
+  box-shadow:
+    0 0 0 6px rgba(99, 102, 241, 0.10),
+    0 0 22px rgba(236, 72, 153, 0.12);
+  pointer-events: none;
+}
+
+.ac-timeline__companyName {
+  display: inline-block;
+  min-width: 0;
+  max-width: clamp(11ch, 18vw, 10ch);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.ac-timeline__companyLogo {
+  --company-logo-bg: rgba(120, 100, 255, 0.24);
+  --company-logo-fg: rgba(231, 234, 241, 0.95);
+  width: var(--company-logo-size);
+  height: var(--company-logo-size);
+  border-radius: var(--company-logo-radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  font-size: var(--company-logo-font);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  background: var(--company-logo-bg);
+  color: var(--company-logo-fg);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  overflow: hidden;
+}
+
+.ac-timeline__companyLogoImg {
+  width: var(--company-logo-img-size);
+  height: var(--company-logo-img-size);
+  object-fit: contain;
+  display: block;
+  transform: scale(var(--company-logo-img-scale));
+  transform-origin: center;
 }
 
 .ac-timeline__dotWrap {
   position: absolute;
   left: 0;
-  top: 14px;
+  top: 18px;
   width: 26px;
   height: 26px;
   display: grid;
@@ -96,6 +190,21 @@
   }
 }
 
+/* Current role highlight (must be AFTER dotOuter rules) */
+.ac-timeline .ac-timeline__item[data-current="true"] .ac-timeline__dotOuter {
+  box-shadow:
+    0 0 0 6px rgba(99, 102, 241, 0.34),
+    0 0 28px rgba(99, 102, 241, 0.22),
+    0 0 58px rgba(236, 72, 153, 0.14);
+}
+
+.ac-timeline .ac-timeline__item[data-current="true"] .ac-timeline__dotInner {
+  box-shadow:
+    0 0 0 3px rgba(236, 72, 153, 0.18),
+    0 0 16px rgba(236, 72, 153, 0.22);
+}
+
+
 .ac-timeline__dotInner {
   width: 10px;
   height: 10px;
@@ -110,3 +219,42 @@
   .ac-timeline__item { grid-template-columns: 1fr; }
   .ac-timeline__sticky { position: static !important; }
 }
+
+/* segment pieces that build one-by-one */
+.ac-timeline__seg {
+  position: absolute;
+  left: 12px;
+  width: 2px;
+  border-radius: 999px;
+
+  /* same vibe as your fill line */
+  background: linear-gradient(
+    to bottom,
+    rgba(99, 102, 241, 0.0),
+    rgba(99, 102, 241, 0.95),
+    rgba(236, 72, 153, 0.95),
+    rgba(236, 72, 153, 0.0)
+  );
+
+  transform-origin: top;
+  transform: scaleY(0); /* IMPORTANT: starts invisible */
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* ripple ring for the “click” */
+.ac-timeline__dotRipple {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 2px solid rgba(99, 102, 241, 0.55);
+  box-shadow:
+    0 0 0 6px rgba(99, 102, 241, 0.10),
+    0 0 22px rgba(236, 72, 153, 0.12);
+  pointer-events: none;
+}
+
+
+
+

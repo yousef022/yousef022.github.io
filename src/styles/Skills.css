@@ -1,0 +1,119 @@
+.skillsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 820px) {
+  .skillsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.skillsBucket,
+.card.skillsCard {
+  --skill-accent: rgba(200, 206, 224, 0.86);
+}
+
+.skillsBucket {
+  min-width: 0;
+}
+
+.card.skillsCard {
+  height: 100%;
+  padding: 16px;
+}
+
+.skillsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.skillsTitle {
+  margin: 0;
+  font-size: var(--text-md);
+  letter-spacing: -0.01em;
+}
+
+.skillsChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.skillChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.skillChip__icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--skill-accent);
+}
+
+.skillChip__svg {
+  width: 16px;
+  height: 16px;
+  opacity: 0.95;
+  display: block;
+}
+
+.skillChip__fallback {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0.92;
+}
+
+.skillChip__label {
+  white-space: nowrap;
+}
+
+.skillChip:hover {
+  border-color: var(--border-strong);
+  background: var(--surface);
+}
+
+.skillsBucket[data-skill-group="product"],
+.card.skillsCard[data-skill-group="product"] {
+  --skill-accent: rgba(146, 161, 255, 0.88);
+}
+
+.skillsBucket[data-skill-group="reliability"],
+.card.skillsCard[data-skill-group="reliability"] {
+  --skill-accent: rgba(190, 176, 219, 0.88);
+}
+
+.skillsBucket[data-skill-group="cloud"],
+.card.skillsCard[data-skill-group="cloud"] {
+  --skill-accent: rgba(109, 196, 202, 0.88);
+}
+
+.skillsBucket[data-skill-group="mobile"],
+.card.skillsCard[data-skill-group="mobile"] {
+  --skill-accent: rgba(128, 182, 145, 0.88);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skillChip {
+    transition: none;
+  }
+}

@@ -10,13 +10,6 @@ const Footer: React.FC = () => (
         <span className="p">
           (c) {new Date().getFullYear()} {profile.name}
         </span>
-        <div className="row">
-          {profile.links.map((link) => (
-            <a key={link.href} href={link.href} className="p">
-              {link.label}
-            </a>
-          ))}
-        </div>
       </div>
     </div>
   </footer>

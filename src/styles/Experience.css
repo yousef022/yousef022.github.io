@@ -1,0 +1,31 @@
+/* Experience card hook */
+    .card.xpCard {
+    position: relative;
+    overflow: hidden;
+    }
+
+    /* Optional: glow for current role */
+    .card.xpCard.isCurrent {
+    border-color: rgba(120, 100, 255, 0.28);
+    box-shadow:
+        0 0 0 1px rgba(120, 100, 255, 0.10),
+        0 18px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    .card.xpCard.isCurrent::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    background:
+        radial-gradient(520px 260px at 15% 0%, rgba(120, 100, 255, 0.14), transparent 60%),
+        radial-gradient(420px 240px at 90% 0%, rgba(0, 220, 255, 0.08), transparent 55%);
+    opacity: 0.9;
+    pointer-events: none;
+    }
+
+    .card.xpCard > * {
+    position: relative;
+    z-index: 1;
+    }
+
+    

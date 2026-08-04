@@ -1,14 +1,22 @@
+export type ExperienceLogo = {
+  src?: string;
+  initials?: string;
+  bg?: string;
+  color?: string;
+};
+
 export type Experience = {
   company: string;
   role: string;
   period: string;
   summary: string;
   highlights: string[];
+  logo?: ExperienceLogo;
 };
 
 export const experiences: Experience[] = [
   {
-    company: "DeepIDV",
+    company: "deepidv",
     role: "Software Engineer",
     period: "July 2025 - Present",
     summary: "Building identity verification and device management platform systems.",
@@ -16,6 +24,12 @@ export const experiences: Experience[] = [
       "Shipped features for onboarding, verification, and operational tooling",
       "Reduced support overhead through better logging, clearer failure handling, and RCA-driven fixes",
     ],
+    logo: {
+      src: "/logos/deepidv.png",
+      initials: "DI",
+      bg: "rgba(70, 110, 255, 0.26)",
+      color: "#c9d8ff",
+    },
   },
   {
     company: "Big Instance Technologies",
@@ -26,9 +40,15 @@ export const experiences: Experience[] = [
       "Designed workflows for device monitoring and reporting",
       "Delivered stable UI patterns for operational tooling",
     ],
+    logo: {
+      src: "/logos/big-instance-technologies.png",
+      initials: "BI",
+      bg: "rgba(250, 254, 255, 0.2)",
+      color: "#c4f1ff",
+    },
   },
   {
-    company: "CleanList.Ai",
+    company: "Cleanlist.ai",
     role: "Full-Stack Developer Intern",
     period: "Feb 2024 - Aug 2024",
     summary: "Developed an email validation system for generated user leads.",
@@ -36,6 +56,12 @@ export const experiences: Experience[] = [
       "Implemented validation services and API endpoints",
       "Improved lead quality with better verification logic",
     ],
+    logo: {
+      src: "/logos/cleanlist-ai.png",
+      initials: "CL",
+      bg: "rgba(95, 211, 142, 0.18)",
+      color: "#ccffe5",
+    },
   },
   {
     company: "SOTI",
@@ -46,5 +72,6 @@ export const experiences: Experience[] = [
       "Updated data collection app for new Android devices",
       "Built fall detection research workflows and surface detection models",
     ],
+    logo: { initials: "SO", bg: "rgba(212, 146, 255, 0.20)", color: "#f2d8ff" },
   },
 ];
