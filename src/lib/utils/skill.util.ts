@@ -1,12 +1,11 @@
-export type SkillGroup = "languages" | "web" | "frameworks" | "databases" | "soft" | "default";
+export type SkillGroup = "product" | "reliability" | "cloud" | "mobile" | "default";
 
 export const getBucketGroup = (title: string): SkillGroup => {
   const t = title.toLowerCase();
-  if (t.includes("language")) return "languages";
-  if (t.includes("web")) return "web";
-  if (t.includes("framework")) return "frameworks";
-  if (t.includes("database")) return "databases";
-  if (t.includes("soft")) return "soft";
+  if (t.includes("product")) return "product";
+  if (t.includes("reliability")) return "reliability";
+  if (t.includes("cloud")) return "cloud";
+  if (t.includes("mobile")) return "mobile";
   return "default";
 };
 

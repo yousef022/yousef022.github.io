@@ -63,7 +63,6 @@ const HomeHero: React.FC = () => {
         stats={stats}
         avatarSrc={yoMark}
         primaryCta={{ label: "View Projects", href: "/#/projects" }}
-        footerBadges={["Open to startup roles", "Fast shipping \u00B7 Clean systems"]}
       />
     </Section>
   );

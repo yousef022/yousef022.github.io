@@ -14,10 +14,7 @@ const SectionHeader: FC<SectionHeaderProps> = ({ title, actionLabel, actionTo, c
 
   return (
     <div className={classes}>
-      <div className="sectionHeader__lead">
-        <h2 className="sectionHeader__title">{title}</h2>
-        <span className="sectionHeader__line" aria-hidden="true" />
-      </div>
+      <h2 className="sectionHeader__title">{title}</h2>
 
       {actionLabel && actionTo ? (
         <Link to={actionTo} className="sectionHeader__link">

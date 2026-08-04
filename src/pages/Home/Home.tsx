@@ -1,6 +1,5 @@
 import Card from "../../components/ui/Card";
 import Tag from "../../components/ui/Tag";
-import Button from "../../components/ui/Button";
 import Section from "../../components/ui/Section";
 import SectionHeader from "../../components/ui/SectionHeader";
 import CaseStudyCard from "../../components/sections/caseStudies/CaseStudyCard";
@@ -49,7 +48,7 @@ const Home: React.FC = () => {
 
       <Section className="grid">
         <SectionHeader title="Education" />
-        <div className="grid2">
+        <div className="homeEducation">
           {education.map((item) => (
             <Card key={item.school} className="eduCard">
               <div className="row eduHeader">
@@ -70,20 +69,26 @@ const Home: React.FC = () => {
         </div>
       </Section>
 
-      <Section>
-        <Card>
-          <h2 className="h2">Let's build something together</h2>
-          <p className="p" style={{ marginTop: 8 }}>
-            Open to startup teams, freelancing, and product-focused roles.
+      <Section className="grid">
+        <SectionHeader title="Contact" />
+        <div className="homeContact">
+          <p className="p homeContact__copy">
+            Open to startup teams, freelance work, and product-focused roles.
           </p>
-          <div className="row" style={{ marginTop: 12 }}>
+          <div className="homeContact__links">
             {profile.links.map((link) => (
-              <Button key={link.href} href={link.href}>
+              <a
+                key={link.href}
+                href={link.href}
+                className="homeContact__link"
+                target={link.href.startsWith("http") ? "_blank" : undefined}
+                rel={link.href.startsWith("http") ? "noreferrer noopener" : undefined}
+              >
                 {link.label}
-              </Button>
+              </a>
             ))}
           </div>
-        </Card>
+        </div>
       </Section>
     </div>
   );

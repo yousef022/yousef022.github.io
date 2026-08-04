@@ -5,54 +5,52 @@ import {
   SiSwift,
   SiPython,
   SiTypescript,
-  SiCplusplus,
-  SiHtml5,
-  SiCss3,
-  SiSass,
-  SiBootstrap,
-  SiTailwindcss,
   SiReact,
   SiNodedotjs,
-  SiExpress,
-  SiFastapi,
   SiPostgresql,
-  SiMongodb,
   SiFirebase,
   SiAmazondynamodb,
+  SiAmazonapigateway,
+  SiAmazonwebservices,
+  SiAwslambda,
+  SiDocker,
 } from "react-icons/si";
 
-import { TbCrown, TbMessageCircle, TbPuzzle } from "react-icons/tb";
+import {
+  TbApi,
+  TbBrowser,
+  TbFingerprint,
+  TbPlugConnected,
+  TbShieldLock,
+  TbTestPipe2,
+} from "react-icons/tb";
 
 export const SKILL_ICON_BY_LABEL: Record<string, IconType> = {
-  // Languages
-  Kotlin: SiKotlin,
-  Swift: SiSwift,
-  Python: SiPython,
+  // Product engineering
   TypeScript: SiTypescript,
-  "C/C++": SiCplusplus,
-
-  // Web
-  HTML: SiHtml5,
-  CSS: SiCss3,
-  Sass: SiSass,
-  Bootstrap: SiBootstrap,
-  "Tailwind CSS": SiTailwindcss,
-
-  // Frameworks
   React: SiReact,
   "Node.js": SiNodedotjs,
-  "Express.js": SiExpress,
-  FastAPI: SiFastapi,
-  "React Native": SiReact,
+  "Browser Extensions": TbBrowser,
+  "Identity & Workflows": TbFingerprint,
 
-  // Databases
-  Postgres: SiPostgresql,
-  MongoDB: SiMongodb,
-  Firebase: SiFirebase,
+  // APIs and reliability
+  "REST APIs": TbApi,
+  "API Integrations": TbPlugConnected,
+  "Auth & Sessions": TbShieldLock,
+  "Automated Testing": TbTestPipe2,
+  "Python / FastAPI": SiPython,
+
+  // Cloud and data
+  "AWS CDK": SiAmazonwebservices,
+  Lambda: SiAwslambda,
+  "API Gateway": SiAmazonapigateway,
   DynamoDB: SiAmazondynamodb,
+  Postgres: SiPostgresql,
+  Docker: SiDocker,
 
-  // Soft skills
-  Leadership: TbCrown,
-  Communication: TbMessageCircle,
-  "Problem solving": TbPuzzle,
+  // Mobile engineering
+  Kotlin: SiKotlin,
+  Swift: SiSwift,
+  "React Native": SiReact,
+  Firebase: SiFirebase,
 };

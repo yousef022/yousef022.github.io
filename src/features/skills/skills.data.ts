@@ -1,23 +1,20 @@
 import { type SkillBucket } from "../../lib/models/skill.types";
+
 export const skillBuckets = [
   {
-    title: "Programming Languages",
-    items: ["TypeScript", "Python", "Kotlin", "Swift", "C/C++"],
+    title: "Product Engineering",
+    items: ["TypeScript", "React", "Node.js", "Browser Extensions", "Identity & Workflows"],
   },
   {
-    title: "Web Development",
-    items: [ "Node.js",  "HTML", "CSS", "Sass", "Tailwind CSS"],
+    title: "APIs & Reliability",
+    items: ["REST APIs", "API Integrations", "Auth & Sessions", "Automated Testing", "Python / FastAPI"],
   },
   {
-    title: "Frameworks",
-    items: ["React Native", "React", "FastAPI", "Express.js"],
+    title: "Cloud & Data",
+    items: ["AWS CDK", "Lambda", "API Gateway", "DynamoDB", "Postgres", "Docker"],
   },
   {
-    title: "Databases",
-    items: ["Postgres", "MongoDB", "DynamoDB", "Firebase"],
-  },
-  {
-    title: "Soft Skills",
-    items: ["Leadership", "Problem solving", "Communication", ],
+    title: "Mobile Engineering",
+    items: ["Kotlin", "Swift", "React Native", "Firebase"],
   },
 ] as SkillBucket[];

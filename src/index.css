@@ -5,9 +5,9 @@
   --text: #e7eaf1;
   --muted: #a7b0c1;
   --border: rgba(255, 255, 255, 0.08);
-  --shadow: 0 14px 50px rgba(0, 0, 0, 0.35);
-  --radius: 16px;
-  --radius2: 22px;
+  --shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
+  --radius: 12px;
+  --radius2: 16px;
   --max: 1040px;
 
   --hero-cols: minmax(0, 1.25fr) minmax(0, 360px);
@@ -28,7 +28,7 @@
   --text-3xl: clamp(1.75rem, 1.35rem + 1.40vw, 2.50rem);
   --text-4xl: clamp(2.125rem, 1.60rem + 2.20vw, 2.875rem);
   --h1: var(--text-4xl);
-  --section-gap: clamp(32px, 7vw, 96px);
+  --section-gap: clamp(28px, 5vw, 64px);
   --section-pad: clamp(18px, 4.5vw, 56px);
 
   --border-strong: rgba(255, 255, 255, 0.18);
@@ -46,16 +46,10 @@ body {
 }
 body {
   margin: 0;
-  font-family:
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    Segoe UI,
-    Roboto,
-    Arial;
+  font-family: ui-sans-serif, system-ui, sans-serif;
   background:
-    radial-gradient(1200px 700px at 15% 10%, rgba(120, 100, 255, 0.16), transparent 50%),
-    radial-gradient(900px 600px at 80% 0%, rgba(0, 220, 255, 0.1), transparent 45%),
+    radial-gradient(980px 620px at 14% 8%, rgba(88, 73, 126, 0.16), transparent 56%),
+    radial-gradient(760px 480px at 82% 0%, rgba(34, 94, 98, 0.08), transparent 52%),
     var(--bg);
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -97,64 +91,90 @@ a:hover {
 }
 
 .sectionHeader {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  display: flex;
   align-items: center;
-  gap: 18px;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .sectionHeader--inset {
   margin-top: 22px;
 }
 
-.sectionHeader__lead {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  min-width: 0;
-}
-
 .sectionHeader__title {
   margin: 0;
-  flex: 0 0 auto;
-  font-size: clamp(1.34rem, 1.18rem + 0.68vw, 1.74rem);
-  line-height: 1.04;
-  letter-spacing: -0.03em;
-  font-weight: 760;
+  min-width: 0;
+  font-size: clamp(1.22rem, 1.12rem + 0.45vw, 1.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  font-weight: 720;
   text-wrap: balance;
-}
-
-.sectionHeader__line {
-  display: block;
-  flex: 1 1 auto;
-  min-width: 48px;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04) 40%, transparent 100%);
-  opacity: 0.62;
 }
 
 .sectionHeader__link {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  color: rgba(222, 228, 240, 0.74);
-  font-size: var(--text-xs);
-  font-weight: 540;
-  letter-spacing: 0.02em;
+  gap: 6px;
+  color: rgba(231, 234, 241, 0.72);
+  font-size: var(--text-sm);
+  font-weight: 500;
   white-space: nowrap;
-  transition: color 160ms ease, transform 160ms ease, opacity 160ms ease;
+  transition: color 160ms ease, opacity 160ms ease;
 }
 
 .sectionHeader__link:hover {
   color: var(--text);
-  transform: translateX(2px);
   text-decoration: none;
 }
 
 .sectionHeader__link svg {
   width: 14px;
   height: 14px;
-  opacity: 0.78;
+  opacity: 0.72;
+}
+
+.homeContact {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px 24px;
+  flex-wrap: wrap;
+}
+
+.homeContact__copy {
+  max-width: 44ch;
+}
+
+.homeEducation {
+  max-width: 560px;
+}
+
+.homeContact__links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.homeContact__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font-size: var(--text-sm);
+  transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
+}
+
+.homeContact__link:hover {
+  border-color: var(--border-strong);
+  background: var(--surface);
+  text-decoration: none;
 }
 
 
@@ -198,13 +218,9 @@ a:hover {
   }
 
   .sectionHeader {
-    grid-template-columns: 1fr;
-    align-items: start;
+    align-items: flex-start;
+    flex-wrap: wrap;
     gap: 10px;
-  }
-
-  .sectionHeader__lead {
-    gap: 12px;
   }
 
 }
@@ -221,22 +237,6 @@ a:hover {
   scroll-margin-top: 90px;
 }
 
-.section::after {
-  content: "";
-  position: absolute;
-  inset: -10px -12px;
-  border-radius: 28px;
-  background:
-    radial-gradient(
-      420px 240px at 20% -10%,
-      rgba(0, 180, 255, 0.12),
-      transparent 60%
-    );
-  opacity: 0.6;
-  pointer-events: none;
-  z-index: -1;
-}
-
 .section + .section {
   margin-top: var(--section-gap);
 }
@@ -251,15 +251,6 @@ a:hover {
   background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
   opacity: 0.7;
   pointer-events: none;
-}
-
-.section:nth-of-type(even)::after {
-  background:
-    radial-gradient(
-      420px 240px at 85% -10%,
-      rgba(255, 170, 80, 0.12),
-      transparent 60%
-    );
 }
 
 .eduCard {
@@ -356,7 +347,7 @@ html[data-theme="light"] {
   --muted: #4c5566;
 
   --border: rgba(16, 19, 24, 0.12);
-  --shadow: 0 14px 50px rgba(16, 19, 24, 0.12);
+  --shadow: 0 8px 22px rgba(16, 19, 24, 0.08);
 
   --surface: rgba(16, 19, 24, 0.03);
   --surface2: rgba(16, 19, 24, 0.05);
@@ -366,8 +357,8 @@ html[data-theme="light"] {
 /* Light mode background (keeps the glow vibe but on light) */
 html[data-theme="light"] body {
   background:
-    radial-gradient(1200px 700px at 15% 10%, rgba(120, 100, 255, 0.14), transparent 50%),
-    radial-gradient(900px 600px at 80% 0%, rgba(0, 220, 255, 0.1), transparent 45%),
+    radial-gradient(980px 620px at 14% 8%, rgba(120, 100, 255, 0.1), transparent 56%),
+    radial-gradient(760px 480px at 82% 0%, rgba(26, 119, 122, 0.06), transparent 52%),
     var(--bg);
   background-attachment: fixed;
   background-repeat: no-repeat;
