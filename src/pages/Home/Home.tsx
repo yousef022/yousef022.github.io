@@ -76,9 +76,7 @@ const Home: React.FC = () => {
       <Section className="grid">
         <SectionHeader title="Contact" />
         <div className="homeContact">
-          <p className="p homeContact__copy">
-            Open to startup teams, freelance work, and product-focused roles.
-          </p>
+          <p className="p homeContact__copy">{profile.availability}</p>
           <div className="homeContact__links">
             {profile.links.map((link) => (
               <a
