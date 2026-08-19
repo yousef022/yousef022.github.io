@@ -1,86 +1,345 @@
-/* Make sure this overrides .card padding if needed */
-.card.caseCard {
-  position: relative;
-  overflow: hidden;
-  padding: clamp(16px, 2.2vw, 22px);
+.caseStudyShowcase {
+  display: grid;
+  gap: 14px;
 }
 
-/* subtle glow background */
+.caseStudySupporting {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.caseStudySupporting--all {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.caseStudySupporting--all .caseCard:last-child {
+  grid-column: 1 / -1;
+}
+
+.caseStudySupporting--all .caseCard:last-child .caseCard__body {
+  grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr);
+  gap: clamp(28px, 4vw, 48px);
+}
+
+.caseStudySupporting--all .caseCard:last-child .caseCard__point {
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 14px;
+}
+
+.card.caseCard {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 100%;
+  flex-direction: column;
+  gap: 18px;
+  overflow: hidden;
+  padding: clamp(18px, 2.4vw, 24px);
+  background: linear-gradient(118deg, rgba(120, 100, 255, 0.045), transparent 34%), var(--surface);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
 .card.caseCard::before {
   content: "";
   position: absolute;
-  inset: -2px;
-  background:
-    radial-gradient(420px 240px at 10% 0%, rgba(120, 100, 255, 0.10), transparent 60%),
-    radial-gradient(420px 240px at 90% 0%, rgba(0, 220, 255, 0.07), transparent 55%);
-  opacity: 0.9;
+  inset: 0 auto auto 0;
+  width: min(220px, 42%);
+  height: 1px;
+  background: linear-gradient(90deg, rgba(120, 100, 255, 0.9), rgba(66, 190, 216, 0.58), transparent);
+  opacity: 0.72;
   pointer-events: none;
 }
 
-.card.caseCard > * {
-  position: relative;
-  z-index: 1;
+.card.caseCard:hover {
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
-/* Top row: title must be allowed to grow */
-.caseTop {
+.card.caseCard--featured {
+  padding: clamp(22px, 3vw, 30px);
+  background:
+    linear-gradient(110deg, rgba(120, 100, 255, 0.08), transparent 42%),
+    linear-gradient(280deg, rgba(35, 119, 128, 0.055), transparent 36%), var(--surface);
+}
+
+.caseCard__meta {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: rgba(167, 176, 193, 0.82);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.035em;
 }
 
-.caseTitle {
-  flex: 1 1 auto;   /* IMPORTANT: take remaining width */
-  min-width: 0;     /* IMPORTANT: allow text to wrap correctly */
+.caseCard__company {
+  padding-left: 8px;
+  border-left: 1px solid var(--border-strong);
+  color: rgba(231, 234, 241, 0.72);
+  letter-spacing: 0;
 }
 
-/* Make title feel “card title”, not “hero” */
-.caseName {
+.caseCard__body {
+  display: grid;
+  gap: 20px;
+}
+
+.caseCard--featured .caseCard__body {
+  grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr);
+  gap: clamp(28px, 4.5vw, 56px);
+  align-items: start;
+}
+
+.caseCard__intro,
+.caseCard__story {
+  min-width: 0;
+}
+
+.caseCard__name {
   margin: 0;
-  font-size: var(--text-lg);
-  font-weight: 780;
-  letter-spacing: -0.01em;
+  color: var(--text);
+  font-size: clamp(1.2rem, 1.08rem + 0.45vw, 1.48rem);
+  font-weight: 740;
+  letter-spacing: -0.025em;
   line-height: 1.15;
+  text-wrap: balance;
 }
 
-/* Control the one-liner (don’t use global .p here) */
-.caseOneLiner {
-  margin-top: 8px;
+.caseCard--featured .caseCard__name {
+  font-size: clamp(1.48rem, 1.25rem + 0.75vw, 1.9rem);
+}
+
+.caseCard__oneLiner {
+  max-width: 50ch;
+  margin: 9px 0 0;
   color: var(--muted);
   font-size: var(--text-base);
   line-height: 1.55;
-  max-width: 62ch;
-
-  /* clamp so it can’t dominate the card */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
-.caseCta {
-  flex: 0 0 auto;
+.caseCard__story {
+  display: grid;
+  gap: 16px;
+}
+
+.caseCard__point {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.caseCard__point:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.caseCard__point > span {
+  color: rgba(167, 176, 193, 0.72);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.caseCard__point p {
+  margin: 0;
+  color: rgba(231, 234, 241, 0.88);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.caseCard--supporting .caseCard__point {
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+.caseCard__preview {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.caseCard__previewFrame {
+  height: clamp(140px, 17vw, 190px);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #f2f4f7;
+}
+
+.caseCard__previewFrame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.caseCard__previewCaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  color: rgba(167, 176, 193, 0.76);
+  font-size: var(--text-xs);
+}
+
+.caseCard__previewCaption a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: rgba(231, 234, 241, 0.7);
   white-space: nowrap;
 }
 
-
-.caseStack {
-  margin-top: 12px;
-  gap: 6px; /* tighter than global stack */
+.caseCard__previewCaption a:hover {
+  color: var(--text);
+  text-decoration: none;
 }
 
-/* nicer hover (optional) */
-.card.caseCard:hover {
-  transform: translateY(-1px);
+.caseCard__previewCaption svg {
+  width: 13px;
+  height: 13px;
+}
+
+.caseCard__footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.caseCard__stack {
+  gap: 6px;
+}
+
+.caseCard__link {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  color: var(--text);
+  font-size: var(--text-sm);
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.caseCard__link svg {
+  width: 16px;
+  height: 16px;
+  color: rgba(97, 196, 216, 0.88);
   transition: transform 160ms ease;
 }
 
-@media (max-width: 520px) {
-  .caseTop {
-    flex-direction: column;
-    align-items: flex-start;
+.caseCard__link:hover {
+  text-decoration: none;
+}
+
+.caseCard__link:hover svg {
+  transform: translateX(3px);
+}
+
+.workPage {
+  display: grid;
+  padding-block: clamp(24px, 4vw, 48px);
+}
+
+.workPage__header {
+  max-width: 670px;
+}
+
+.workPage__title {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--text-3xl);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.workPage__intro {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: var(--text-md);
+  line-height: 1.55;
+}
+
+.caseStudyShowcase--all {
+  margin-top: clamp(24px, 4vw, 40px);
+}
+
+html[data-theme="light"] .card.caseCard {
+  background: linear-gradient(118deg, rgba(92, 73, 180, 0.055), transparent 34%), rgba(255, 255, 255, 0.72);
+  box-shadow: 0 14px 30px rgba(16, 19, 24, 0.06);
+}
+
+html[data-theme="light"] .caseCard__point p {
+  color: rgba(16, 19, 24, 0.82);
+}
+
+html[data-theme="light"] .caseCard__company {
+  color: rgba(16, 19, 24, 0.68);
+}
+
+html[data-theme="light"] .caseCard__previewCaption a {
+  color: rgba(16, 19, 24, 0.72);
+}
+
+@media (max-width: 820px) {
+  .caseStudySupporting,
+  .caseStudySupporting--all {
+    grid-template-columns: 1fr;
+  }
+
+  .caseStudySupporting--all .caseCard:last-child {
+    grid-column: auto;
+  }
+
+  .caseCard--featured .caseCard__body,
+  .caseStudySupporting--all .caseCard:last-child .caseCard__body {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .caseStudySupporting--all .caseCard:last-child .caseCard__point {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 }
 
+@media (max-width: 560px) {
+  .card.caseCard,
+  .card.caseCard--featured {
+    gap: 16px;
+    padding: 18px;
+  }
 
+  .caseCard__point,
+  .caseCard--supporting .caseCard__point {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .caseCard__footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .caseCard__previewCaption {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card.caseCard,
+  .caseCard__link svg {
+    transition: none;
+  }
+}

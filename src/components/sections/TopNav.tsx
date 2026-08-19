@@ -41,7 +41,7 @@ const TopNav: React.FC = () => {
 
   const navLinks = [
     { to: "/", label: "Home", end: true },
-    { to: "/projects", label: "Projects", end: false },
+    { to: "/projects", label: "Work", end: false },
     { to: "/about", label: "About", end: false },
     { to: "/contact", label: "Contact", end: false },
   ] as const;
