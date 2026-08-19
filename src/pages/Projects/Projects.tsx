@@ -1,28 +1,37 @@
+import { useEffect } from "react";
 import { useDocumentTitle } from "../../lib/hooks/useDocumentTitle";
 import { profile } from "../../features/profile/profile.data";
-import { selectAllProjects } from "../../features/projects/project.selectors";
-import ProjectCard from "../../components/sections/ProjectCard";
+import { selectAllCaseStudies } from "../../features/caseStudies/caseStudy.selectors";
+import CaseStudyCard from "../../components/sections/caseStudies/CaseStudyCard";
 
 const Projects: React.FC = () => {
-  useDocumentTitle(`${profile.name} - Projects`);
+  useDocumentTitle(`${profile.name} - Product Work`);
 
-  const projects = selectAllProjects();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const [flagshipCaseStudy, ...supportingCaseStudies] = selectAllCaseStudies();
 
   return (
-    <div className="grid" style={{ gap: 14 }}>
-      <div>
-        <h1 className="h1" style={{ fontSize: 34 }}>
-          Projects
-        </h1>
-        <p className="p">
-          Case-study highlights: problem, constraints, tradeoffs, outcomes.
+    <div className="workPage">
+      <header className="workPage__header">
+        <h1 className="workPage__title">Product work</h1>
+        <p className="workPage__intro">
+          Products I have shipped across browser, Android, backend automation, and identity verification.
         </p>
-      </div>
+      </header>
 
-      <div className="grid2">
-        {projects.map((project) => (
-          <ProjectCard key={project.slug} project={project} />
-        ))}
+      <div className="caseStudyShowcase caseStudyShowcase--all">
+        {flagshipCaseStudy ? (
+          <CaseStudyCard project={flagshipCaseStudy} variant="featured" />
+        ) : null}
+
+        <div className="caseStudySupporting caseStudySupporting--all">
+          {supportingCaseStudies.map((caseStudy) => (
+            <CaseStudyCard key={caseStudy.slug} project={caseStudy} />
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -8,26 +8,30 @@ import HomeHero from "../../components/sections/home/HeroHome";
 import SkillsGrid from "../../components/sections/SkillsGrid";
 import { useDocumentTitle } from "../../lib/hooks/useDocumentTitle";
 import { profile } from "../../features/profile/profile.data";
-import { caseStudies } from "../../features/caseStudies/caseStudy.data";
+import { selectFeaturedCaseStudies } from "../../features/caseStudies/caseStudy.selectors";
 import { experiences } from "../../features/experience/experience.data";
 import { skillBuckets } from "../../features/skills/skills.data";
 import { education } from "../../features/education/education.data";
 
 const Home: React.FC = () => {
   useDocumentTitle(`${profile.name} - Portfolio`);
-  const cs = caseStudies.filter((c) => c.featured).slice(0, 2);
+  const [flagshipCaseStudy, ...supportingCaseStudies] = selectFeaturedCaseStudies();
 
   return (
     <div className="sectionLis">
       <HomeHero />
 
       <Section className="grid">
-        <SectionHeader title="Case studies" actionLabel="View all" actionTo="/projects" />
+        <SectionHeader title="Featured product work" actionLabel="View all work" actionTo="/projects" />
 
-        <div className="grid2">
-          {cs.map((caseStudy) => (
-            <CaseStudyCard key={caseStudy.slug} project={caseStudy} />
-          ))}
+        <div className="caseStudyShowcase">
+          {flagshipCaseStudy ? <CaseStudyCard project={flagshipCaseStudy} variant="featured" /> : null}
+
+          <div className="caseStudySupporting">
+            {supportingCaseStudies.map((caseStudy) => (
+              <CaseStudyCard key={caseStudy.slug} project={caseStudy} />
+            ))}
+          </div>
         </div>
       </Section>
 
