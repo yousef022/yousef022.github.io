@@ -9,7 +9,7 @@ export const education: Education[] = [
   {
     school: "Sheridan College",
     program: "Honours Bachelor of Computer Science (Mobile Computing)",
-    period: "Sep 2020 - Dec 2024",
+    period: "Sep 2020 - Dec 2025",
     highlights: [
       "Mobile App Development",
       "Software Engineering",
