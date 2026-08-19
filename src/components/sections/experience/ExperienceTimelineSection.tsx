@@ -49,11 +49,14 @@ const ExperienceTimelineSection: React.FC<Props> = ({ items, limit, timelineProp
         title: (
           <span className="ac-timeline__titleInner">
             <span
-              className="ac-timeline__companyLogo"
+              className={`ac-timeline__companyLogo${
+                item.logo?.presentation === "bare" ? " ac-timeline__companyLogo--bare" : ""
+              }`}
               style={
                 {
                   ["--company-logo-bg"]: item.logo?.bg ?? "rgba(120, 100, 255, 0.24)",
                   ["--company-logo-fg"]: item.logo?.color ?? "rgba(231, 234, 241, 0.95)",
+                  ["--company-logo-img-scale"]: item.logo?.scale ?? 1.18,
                 } as React.CSSProperties
               }
               aria-hidden
