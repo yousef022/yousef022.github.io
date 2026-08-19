@@ -1,138 +1,4 @@
-// import React, { useEffect, useRef, useState } from "react";
-// import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-// import "../../styles/Timeline.css";
-
-// export type TimelineEntry = {
-//   id?: string;
-//   title: React.ReactNode;
-//   content: React.ReactNode;
-// };
-
-// export type TimelineProps = {
-//   data: TimelineEntry[];
-//   stickyTopPx?: number;
-//   stickyTitle?: boolean;
-
-//   // optional “overall styling” hooks
-//   className?: string;
-//   titleWidthPx?: number;
-// };
-
-// const Timeline: React.FC<TimelineProps> = ({
-//   data,
-//   stickyTopPx = 84,
-//   stickyTitle = false,
-//   className,
-//   titleWidthPx = 220,
-// }) => {
-//   const containerRef = useRef<HTMLDivElement | null>(null);
-//   const measureRef = useRef<HTMLDivElement | null>(null);
-// //   const prefersReducedMotion = useReducedMotion();
-//   const lineCapPx = 29;
-
-//   useEffect(() => {
-//     if (!measureRef.current) return;
-
-//     const el = measureRef.current;
-//     const update = () => setContentHeight(el.getBoundingClientRect().height);
-
-//     update();
-
-//     const ro = new ResizeObserver(update);
-//     ro.observe(el);
-
-//     return () => ro.disconnect();
-//   }, [data.length]);
-
-//   const { scrollYProgress } = useScroll({
-//     target: containerRef,
-//     offset: ["start 70%", "end 20%"],
-//   });
-
-//   const usableLineHeight = Math.max(contentHeight - lineCapPx * 2, 0);
-//   const lineHeight = useTransform(scrollYProgress, [0, 1], [0, usableLineHeight]);
-//   const lineOpacity = useTransform(scrollYProgress, [0, 0.08], [0, 1]);
-//   const baseOpacity = useTransform(scrollYProgress, [0, 0.12], [0, 1]);
-//   const itemOffset = prefersReducedMotion ? 0 : 14;
-//   const titleDur = prefersReducedMotion ? 0.18 : 0.28;
-//   const contentDur = prefersReducedMotion ? 0.22 : 0.32;
-//   const afterTitleGap = prefersReducedMotion ? 0.22 : 0.35;
-//   const rowViewport = { once: false, amount: 0.28, margin: "0px 0px -12% 0px" } as const;
-
-//   return (
-//     <div
-//       ref={containerRef}
-//       className={`ac-timeline${className ? ` ${className}` : ""}`}
-//       data-sticky-title={stickyTitle ? "true" : "false"}
-//       style={
-//         {
-//           ["--ac-sticky-top"]: `${stickyTopPx}px`,
-//           ["--ac-title-col"]: `${titleWidthPx}px`,
-//           ["--ac-line-cap"]: `${lineCapPx}px`,
-//         } as React.CSSProperties
-//       }
-//     >
-//       <div className="ac-timeline__inner" ref={measureRef}>
-//         <motion.div
-//           className="ac-timeline__lineBase"
-//           style={{ height: usableLineHeight, opacity: baseOpacity }}
-//           aria-hidden
-//         />
-
-//         <motion.div
-//           className="ac-timeline__lineFill"
-//           style={{ height: lineHeight, opacity: lineOpacity }}
-//           aria-hidden
-//         />
-
-//         {data.map((entry, idx) => {
-//           const rowDelay = prefersReducedMotion ? 0 : Math.min(idx * 0.06, 0.16);
-//           const contentDelay = rowDelay + titleDur + afterTitleGap;
-
-//           return (
-//             <div key={entry.id ?? `timeline-row-${idx}`} className="ac-timeline__item" data-current={idx === 0 ? "true" : "false"}>
-//               <div className="ac-timeline__dotWrap" aria-hidden>
-//                 <motion.div
-//                   className="ac-timeline__dotOuter"
-//                   initial={{ scale: 0.9, opacity: 0.7 }}
-//                   whileInView={{ scale: 1, opacity: 1 }}
-//                   transition={{ type: "spring", stiffness: 300, damping: 20, delay: rowDelay }}
-//                   viewport={rowViewport}
-//                 >
-//                   <div className="ac-timeline__dotInner" />
-//                 </motion.div>
-//               </div>
-
-//               <motion.div
-//                 className="ac-timeline__sticky"
-//                 initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -10 }}
-//                 whileInView={{ opacity: 1, x: 0 }}
-//                 transition={{ duration: titleDur, ease: "easeOut", delay: rowDelay }}
-//                 viewport={rowViewport}
-//               >
-//                 <div className="ac-timeline__title">{entry.title}</div>
-//               </motion.div>
-
-//               <motion.div
-//                 className="ac-timeline__content"
-//                 initial={{ opacity: 0, y: itemOffset }}
-//                 whileInView={{ opacity: 1, y: 0 }}
-//                 transition={{ duration: contentDur, ease: "easeOut", delay: contentDelay }}
-//                 viewport={rowViewport}
-//               >
-//                 {entry.content}
-//               </motion.div>
-//             </div>
-//           );
-//         })}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Timeline;
-
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { animate, motion, useReducedMotion } from "framer-motion";
 import "../../styles/Timeline.css";
 
@@ -150,10 +16,21 @@ export type TimelineProps = {
   titleWidthPx?: number;
 };
 
+type Segment = { top: number; height: number };
+
 const EASE_OUT = [0.16, 1, 0.3, 1] as const;
 const MIN_REVEAL_OFFSET_PX = 88;
 const REVEAL_OFFSET_RATIO = 0.12;
-type Segment = { top: number; height: number };
+const MARKER_PAUSE_MS = 130;
+const HEAD_SIZE_PX = 6;
+
+const segmentGeometryMatches = (current: Segment[], next: Segment[]) =>
+  current.length === next.length &&
+  current.every(
+    (segment, index) =>
+      Math.abs(segment.top - next[index].top) < 0.5 &&
+      Math.abs(segment.height - next[index].height) < 0.5
+  );
 
 const Timeline: React.FC<TimelineProps> = ({
   data,
@@ -162,198 +39,125 @@ const Timeline: React.FC<TimelineProps> = ({
   className,
   titleWidthPx = 220,
 }) => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
   const measureRef = useRef<HTMLDivElement | null>(null);
-
   const dotWrapRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const segmentRefs = useRef<Array<HTMLDivElement | null>>([]);
-
+  const segmentRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const segmentHeadRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const prefersReducedMotion = useReducedMotion();
   const lineCapPx = 29;
-  const dotRadiusPx = 11; // dotOuter is 22px
+  const dotRadiusPx = 8;
+
   const [segments, setSegments] = useState<Segment[]>([]);
-
-  // which company is revealed
+  const [measuredDataLength, setMeasuredDataLength] = useState(-1);
+  const [targetStopIdx, setTargetStopIdx] = useState(-1);
   const [builtItemIdx, setBuiltItemIdx] = useState(-1);
-
-  // click ripple state
   const [click, setClick] = useState<{ idx: number; nonce: number }>({ idx: -1, nonce: 0 });
-  const clickClearRef = useRef<number | null>(null);
-
   const [pendingDotIdx, setPendingDotIdx] = useState(-1);
 
-  const stopsRef = useRef<number[]>([]); // dot centers relative to line start
   const currentStopIdxRef = useRef(-1);
-  const targetStopIdxRef = useRef<number | null>(null);
   const animTokenRef = useRef(0);
+  const activeAnimationsRef = useRef<Array<ReturnType<typeof animate>>>([]);
+  const clickClearRef = useRef<number | null>(null);
 
-  const triggerClick = (idx: number) => {
-    setClick((prev) => ({ idx, nonce: prev.nonce + 1 }));
+  const triggerClick = useCallback((idx: number) => {
+    setClick((previous) => ({ idx, nonce: previous.nonce + 1 }));
     if (clickClearRef.current) window.clearTimeout(clickClearRef.current);
     clickClearRef.current = window.setTimeout(() => {
-      setClick((prev) => (prev.idx === idx ? { ...prev, idx: -1 } : prev));
+      setClick((previous) => (previous.idx === idx ? { ...previous, idx: -1 } : previous));
       clickClearRef.current = null;
-    }, 260);
-  };
+    }, 360);
+  }, []);
 
-  const computeTargetStopIdx = () => {
+  const computeTargetStopIdx = useCallback(() => {
     if (typeof window === "undefined") return -1;
 
-    const revealLine = window.innerHeight - Math.max(MIN_REVEAL_OFFSET_PX, window.innerHeight * REVEAL_OFFSET_RATIO);
+    const revealLine =
+      window.innerHeight -
+      Math.max(MIN_REVEAL_OFFSET_PX, window.innerHeight * REVEAL_OFFSET_RATIO);
     let idx = -1;
-    for (let i = 0; i < data.length; i++) {
-      const dotEl = dotWrapRefs.current[i];
-      if (!dotEl) continue;
 
-      const rect = dotEl.getBoundingClientRect();
-      const centerY = rect.top + rect.height / 2;
-      if (centerY <= revealLine) idx = i;
+    for (let i = 0; i < data.length; i += 1) {
+      const dotElement = dotWrapRefs.current[i];
+      if (!dotElement) continue;
+
+      const rect = dotElement.getBoundingClientRect();
+      if (rect.top + rect.height / 2 <= revealLine) idx = i;
     }
+
     return idx;
-  };
-  const setSegmentScale = (segIndex: number, scaleY: number) => {
-    const el = segmentRefs.current[segIndex];
-    if (!el) return;
-    el.style.transform = `scaleY(${scaleY})`;
-  };
+  }, [data.length]);
 
-  const runToStop = async (targetStopIdx: number) => {
-    const token = ++animTokenRef.current;
-    const currentStopIdx = currentStopIdxRef.current;
+  const setSegmentScale = useCallback((segmentIndex: number, scaleY: number) => {
+    const element = segmentRefs.current[segmentIndex];
+    if (element) element.style.transform = `scaleY(${scaleY})`;
+  }, []);
 
-    // backward: snap-hide segments/items above target
-    if (targetStopIdx < currentStopIdx) {
-      currentStopIdxRef.current = targetStopIdx;
-      setBuiltItemIdx(targetStopIdx);
-      setPendingDotIdx(-1); // ✅ add this
+  const resetSegmentHead = useCallback((segmentIndex: number) => {
+    const element = segmentHeadRefs.current[segmentIndex];
+    if (!element) return;
+    element.style.opacity = "0";
+    element.style.transform = "translateY(0px)";
+  }, []);
 
-      for (let s = 0; s < segments.length; s++) {
-        if (s >= targetStopIdx) setSegmentScale(s, 0);
-        else setSegmentScale(s, 1);
-      }
-      return;
-    }
-
-    // forward: step stop-by-stop:
-    // stop 0: click + reveal company 0
-    // stop i>0: animate segment (i-1) -> click dot i -> reveal company i
-    for (let i = currentStopIdx + 1; i <= targetStopIdx; i++) {
-      if (animTokenRef.current !== token) return;
-
-      if (i === 0) {
-        triggerClick(0);
-        setBuiltItemIdx(0);
-        currentStopIdxRef.current = 0;
-        setPendingDotIdx(-1);
-        if (!prefersReducedMotion) await new Promise((r) => setTimeout(r, 150));
-        continue;
-      }
-
-      // show the next dot right before we connect to it
-      setPendingDotIdx(i);
-
-      // animate segment (i-1) down to dot i
-      const segEl = segmentRefs.current[i - 1];
-      if (segEl) {
-        if (prefersReducedMotion) {
-          setSegmentScale(i - 1, 1);
-        } else {
-          await animate(segEl, { scaleY: 1 }, { type: "spring", stiffness: 220, damping: 24, mass: 0.4 })
-            .finished;
-        }
-      }
-
-      triggerClick(i);
-      setBuiltItemIdx(i);
-      currentStopIdxRef.current = i;
-
-      // dot i is now built (not pending anymore)
-      setPendingDotIdx(-1);
-
-      if (!prefersReducedMotion) await new Promise((r) => setTimeout(r, 150));
-    }
-  };
-
-  // Measure dots -> create segments between them -> reset segment scales -> sync to scroll position
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!measureRef.current) return;
-    const el = measureRef.current;
-
-    let raf = 0;
+    const element = measureRef.current;
+    dotWrapRefs.current.length = data.length;
+    let frame = 0;
 
     const update = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
         if (!measureRef.current) return;
 
         const containerRect = measureRef.current.getBoundingClientRect();
-        const h = containerRect.height;
-
-        const usable = Math.max(h - lineCapPx * 2, 0);
-
-        // dot centers -> stops (relative to line start)
-        const stops = dotWrapRefs.current.slice(0, data.length).map((dotEl) => {
-          if (!dotEl) return 0;
-          const r = dotEl.getBoundingClientRect();
-          const centerY = r.top - containerRect.top + r.height / 2;
-          const stop = centerY - lineCapPx;
-          return Math.min(Math.max(stop, 0), usable);
+        const usableHeight = Math.max(containerRect.height - lineCapPx * 2, 0);
+        const stops = dotWrapRefs.current.slice(0, data.length).map((dotElement) => {
+          if (!dotElement) return 0;
+          const rect = dotElement.getBoundingClientRect();
+          const centerY = rect.top - containerRect.top + rect.height / 2;
+          return Math.min(Math.max(centerY - lineCapPx, 0), usableHeight);
         });
 
         if (stops.length) stops[0] = 0;
-        for (let i = 1; i < stops.length; i++) stops[i] = Math.max(stops[i], stops[i - 1]);
+        for (let i = 1; i < stops.length; i += 1) {
+          stops[i] = Math.max(stops[i], stops[i - 1]);
+        }
 
-        // Build segments BETWEEN DOTS ONLY: (0->1), (1->2), ...
         const nextSegments: Segment[] = [];
-        for (let i = 0; i < stops.length - 1; i++) {
-          // gap so line “connects” into dots (doesn't run through the circle)
+        for (let i = 0; i < stops.length - 1; i += 1) {
           const top = stops[i] + dotRadiusPx;
           const height = Math.max(stops[i + 1] - stops[i] - dotRadiusPx * 2, 0);
           nextSegments.push({ top, height });
         }
 
-        stopsRef.current = stops;
-        setSegments(nextSegments);
-
-        // reset segment scales (so the bar is NOT fully rendered)
-        segmentRefs.current.forEach((seg) => {
-          if (seg) seg.style.transform = "scaleY(0)";
-        });
-        currentStopIdxRef.current = -1;
-        setBuiltItemIdx(-1);
-
-        // sync to current scroll position and build up to that stop
-        const idx = computeTargetStopIdx();
-        targetStopIdxRef.current = idx;
-        runToStop(idx);
+        setSegments((current) =>
+          segmentGeometryMatches(current, nextSegments) ? current : nextSegments
+        );
+        setMeasuredDataLength(data.length);
+        setTargetStopIdx(computeTargetStopIdx());
       });
     };
 
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-
+    const resizeObserver = new ResizeObserver(update);
+    resizeObserver.observe(element);
     update();
 
     return () => {
-      cancelAnimationFrame(raf);
-      ro.disconnect();
-      if (clickClearRef.current) window.clearTimeout(clickClearRef.current);
+      cancelAnimationFrame(frame);
+      resizeObserver.disconnect();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.length, lineCapPx, prefersReducedMotion]);
+  }, [computeTargetStopIdx, data.length, dotRadiusPx, lineCapPx]);
 
-  // Scroll/resize -> when the viewport crosses a dot, step build
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    let raf = 0;
+    let frame = 0;
     const update = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const idx = computeTargetStopIdx();
-        if (targetStopIdxRef.current === idx) return;
-        targetStopIdxRef.current = idx;
-        runToStop(idx);
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const nextIndex = computeTargetStopIdx();
+        setTargetStopIdx((current) => (current === nextIndex ? current : nextIndex));
       });
     };
 
@@ -362,19 +166,209 @@ const Timeline: React.FC<TimelineProps> = ({
     update();
 
     return () => {
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(frame);
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.length, segments.length]);
-  const titleDur = prefersReducedMotion ? 0.18 : 0.32;
-  const contentDur = prefersReducedMotion ? 0.2 : 0.38;
-  const itemOffset = prefersReducedMotion ? 0 : 14;
+  }, [computeTargetStopIdx]);
+
+  useLayoutEffect(() => {
+    segmentRefs.current.length = segments.length;
+    segmentHeadRefs.current.length = segments.length;
+    const builtThrough = currentStopIdxRef.current;
+
+    segments.forEach((_, index) => {
+      setSegmentScale(index, index < builtThrough ? 1 : 0);
+      resetSegmentHead(index);
+    });
+  }, [resetSegmentHead, segments, setSegmentScale]);
+
+  useEffect(() => {
+    if (
+      measuredDataLength !== data.length ||
+      segments.length !== Math.max(data.length - 1, 0)
+    ) {
+      return;
+    }
+
+    const token = ++animTokenRef.current;
+    let disposed = false;
+
+    const isStale = () => disposed || animTokenRef.current !== token;
+    const stopActiveAnimations = () => {
+      activeAnimationsRef.current.forEach((controls) => controls.stop());
+      activeAnimationsRef.current = [];
+    };
+    const wait = (duration: number) =>
+      new Promise<void>((resolve) => window.setTimeout(resolve, duration));
+
+    stopActiveAnimations();
+    segmentHeadRefs.current.forEach((_, index) => resetSegmentHead(index));
+
+    const drawSegment = async (segmentIndex: number) => {
+      const element = segmentRefs.current[segmentIndex];
+      const head = segmentHeadRefs.current[segmentIndex];
+      const geometry = segments[segmentIndex];
+      if (!element || !geometry) return;
+
+      if (prefersReducedMotion) {
+        setSegmentScale(segmentIndex, 1);
+        return;
+      }
+
+      const progress = Math.min(
+        Math.max(element.getBoundingClientRect().height / Math.max(geometry.height, 1), 0),
+        1
+      );
+      const remaining = 1 - progress;
+      const baseDuration = Math.min(0.64, Math.max(0.46, geometry.height / 720));
+      const duration = Math.max(0.14, baseDuration * remaining);
+      const fillControls = animate(element, { scaleY: 1 }, { duration, ease: EASE_OUT });
+      const controls = [fillControls];
+
+      if (head && geometry.height > HEAD_SIZE_PX) {
+        const travel = geometry.height - HEAD_SIZE_PX;
+        const start = travel * progress;
+        const distance = travel - start;
+        const headControls = animate(
+          head,
+          {
+            y: [start, start + distance * 0.1, start + distance * 0.88, travel],
+            opacity: [0, 1, 1, 0],
+          },
+          { duration, times: [0, 0.1, 0.86, 1], ease: "linear" }
+        );
+        controls.push(headControls);
+      }
+
+      activeAnimationsRef.current = controls;
+      try {
+        await Promise.all(controls.map((animationControls) => animationControls.finished));
+      } catch {
+        // A newer scroll position intentionally superseded this animation.
+      }
+      activeAnimationsRef.current = [];
+      resetSegmentHead(segmentIndex);
+    };
+
+    const retractSegment = async (segmentIndex: number) => {
+      const element = segmentRefs.current[segmentIndex];
+      if (!element) return;
+
+      resetSegmentHead(segmentIndex);
+      if (prefersReducedMotion) {
+        setSegmentScale(segmentIndex, 0);
+        return;
+      }
+
+      const geometry = segments[segmentIndex];
+      const progress = geometry
+        ? Math.min(
+            Math.max(element.getBoundingClientRect().height / Math.max(geometry.height, 1), 0),
+            1
+          )
+        : 1;
+      const controls = animate(
+        element,
+        { scaleY: 0 },
+        { duration: Math.max(0.1, 0.2 * progress), ease: EASE_OUT }
+      );
+      activeAnimationsRef.current = [controls];
+
+      try {
+        await controls.finished;
+      } catch {
+        // A newer scroll position intentionally superseded this animation.
+      }
+      activeAnimationsRef.current = [];
+    };
+
+    const run = async () => {
+      await Promise.resolve();
+      if (isStale()) return;
+      setPendingDotIdx(-1);
+
+      const currentStopIdx = currentStopIdxRef.current;
+
+      if (targetStopIdx < currentStopIdx) {
+        setBuiltItemIdx(targetStopIdx);
+
+        for (let index = currentStopIdx; index > targetStopIdx; index -= 1) {
+          if (isStale()) return;
+          const segmentIndex = index - 1;
+          if (segmentIndex >= 0) await retractSegment(segmentIndex);
+          if (isStale()) return;
+          currentStopIdxRef.current = index - 1;
+        }
+
+        segments.forEach((_, index) => {
+          setSegmentScale(index, index < targetStopIdx ? 1 : 0);
+        });
+        currentStopIdxRef.current = targetStopIdx;
+        return;
+      }
+
+      if (targetStopIdx === currentStopIdx) {
+        setBuiltItemIdx(currentStopIdx);
+        segments.forEach((_, index) => {
+          setSegmentScale(index, index < currentStopIdx ? 1 : 0);
+        });
+        return;
+      }
+
+      for (let index = currentStopIdx + 1; index <= targetStopIdx; index += 1) {
+        if (isStale()) return;
+
+        if (index > 0) {
+          setPendingDotIdx(index);
+          await drawSegment(index - 1);
+          if (isStale()) return;
+        }
+
+        triggerClick(index);
+        setBuiltItemIdx(index);
+        setPendingDotIdx(-1);
+        currentStopIdxRef.current = index;
+
+        if (!prefersReducedMotion) {
+          await wait(MARKER_PAUSE_MS);
+          if (isStale()) return;
+        }
+      }
+    };
+
+    void run();
+
+    return () => {
+      disposed = true;
+      if (animTokenRef.current === token) animTokenRef.current += 1;
+      stopActiveAnimations();
+    };
+  }, [
+    data.length,
+    measuredDataLength,
+    prefersReducedMotion,
+    resetSegmentHead,
+    segments,
+    setSegmentScale,
+    targetStopIdx,
+    triggerClick,
+  ]);
+
+  useEffect(
+    () => () => {
+      if (clickClearRef.current) window.clearTimeout(clickClearRef.current);
+    },
+    []
+  );
+
+  const titleDuration = prefersReducedMotion ? 0 : 0.34;
+  const contentDuration = prefersReducedMotion ? 0 : 0.42;
+  const itemOffset = prefersReducedMotion ? 0 : 12;
+  const itemBlur = prefersReducedMotion ? "blur(0px)" : "blur(2px)";
 
   return (
     <div
-      ref={containerRef}
       className={`ac-timeline${className ? ` ${className}` : ""}`}
       data-sticky-title={stickyTitle ? "true" : "false"}
       style={
@@ -386,98 +380,127 @@ const Timeline: React.FC<TimelineProps> = ({
       }
     >
       <div className="ac-timeline__inner" ref={measureRef}>
-        {/* NO full-height base line. We render segments only. */}
-        {segments.map((seg, i) => (
+        {segments.map((segment, index) => (
           <div
-            key={`seg-${i}`}
-            ref={(el) => {
-              segmentRefs.current[i] = el;
-            }}
-            className="ac-timeline__seg"
-            style={{
-              top: lineCapPx + seg.top,
-              height: seg.height,
-            }}
+            className="ac-timeline__segment"
+            key={`segment-${index}`}
+            style={{ top: lineCapPx + segment.top, height: segment.height }}
             aria-hidden
-          />
+          >
+            <span className="ac-timeline__segmentTrack" />
+            <span
+              className="ac-timeline__segmentFill"
+              ref={(element) => {
+                segmentRefs.current[index] = element;
+              }}
+            />
+            <span
+              className="ac-timeline__segmentHead"
+              ref={(element) => {
+                segmentHeadRefs.current[index] = element;
+              }}
+            />
+          </div>
         ))}
 
-        {data.map((entry, idx) => {
-          const isRevealed = builtItemIdx >= idx;
-          const isPending = pendingDotIdx === idx; // ✅ add
-          const isClicked = click.idx === idx;
-
-          // show only if built OR pending OR currently clicking
+        {data.map((entry, index) => {
+          const isRevealed = builtItemIdx >= index;
+          const isPending = pendingDotIdx === index;
+          const isClicked = click.idx === index;
           const showDot = isRevealed || isPending || isClicked;
 
           return (
             <div
-              key={entry.id ?? `timeline-row-${idx}`}
               className="ac-timeline__item"
-              data-current={idx === 0 ? "true" : "false"}
+              data-current={index === 0 ? "true" : "false"}
+              key={entry.id ?? `timeline-row-${index}`}
             >
               <div
                 className="ac-timeline__dotWrap"
+                data-state={isRevealed ? "locked" : isPending ? "pending" : "hidden"}
                 aria-hidden
-                ref={(el) => {
-                  dotWrapRefs.current[idx] = el;
+                ref={(element) => {
+                  dotWrapRefs.current[index] = element;
                 }}
-                style={{ opacity: showDot ? 1 : 0 }}  // ✅ safeguard
+                style={{ opacity: showDot ? 1 : 0 }}
               >
-                {/* click ripple */}
-                {isClicked && (
+                {isClicked && !prefersReducedMotion && (
                   <motion.span
-                    key={`ripple-${idx}-${click.nonce}`}
-                    className="ac-timeline__dotRipple"
-                    initial={{ scale: 0.25, opacity: 0.0 }}
-                    animate={{ scale: 2.1, opacity: 0 }}
-                    transition={{ duration: prefersReducedMotion ? 0.22 : 0.52, ease: EASE_OUT }}
+                    className="ac-timeline__contactRing"
+                    key={`contact-${index}-${click.nonce}`}
+                    initial={{ scale: 0.7, opacity: 0.8 }}
+                    animate={{ scale: 1.65, opacity: 0 }}
+                    transition={{ duration: 0.36, ease: EASE_OUT }}
                   />
                 )}
 
+                <motion.span
+                  className="ac-timeline__branch"
+                  initial={false}
+                  animate={
+                    isRevealed
+                      ? { scaleX: 1, opacity: 1 }
+                      : { scaleX: 0, opacity: 0 }
+                  }
+                  transition={{
+                    duration: prefersReducedMotion ? 0 : 0.18,
+                    ease: EASE_OUT,
+                    delay: isRevealed && !prefersReducedMotion ? 0.04 : 0,
+                  }}
+                />
+
                 <motion.div
                   className="ac-timeline__dotOuter"
-                  initial={{ scale: 0.75, opacity: 0 }}
+                  initial={false}
                   animate={
                     showDot
                       ? isRevealed
                         ? isClicked
-                          ? { scale: [1, 1.28, 1], opacity: 1 }
-                          : { scale: 1, opacity: 1 }
-                        : { scale: 0.95, opacity: 0.85 } // ✅ pending dot (only right before connect)
-                      : { scale: 0.75, opacity: 0 } // ✅ fully invisible
+                          ? { scale: [0.82, 1.12, 1], rotate: [-14, 3, 0], opacity: 1 }
+                          : { scale: 1, rotate: 0, opacity: 1 }
+                        : { scale: 0.76, rotate: -18, opacity: 0.34 }
+                      : { scale: 0.62, rotate: -24, opacity: 0 }
                   }
-                  transition={{ duration: prefersReducedMotion ? 0.2 : 0.34, ease: EASE_OUT }}
+                  transition={{
+                    duration: prefersReducedMotion ? 0 : isClicked ? 0.34 : 0.2,
+                    ease: EASE_OUT,
+                  }}
                 >
-                  <div className="ac-timeline__dotInner" />
+                  <span className="ac-timeline__dotInner" />
                 </motion.div>
               </div>
 
-              {/* reveal company name ONLY when that stop is reached */}
               <motion.div
                 className="ac-timeline__sticky"
-                initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -12, filter: "blur(4px)" }}
+                initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -10, filter: itemBlur }}
                 animate={
                   isRevealed
                     ? { opacity: 1, x: 0, filter: "blur(0px)" }
-                    : { opacity: 0, x: prefersReducedMotion ? 0 : -12, filter: "blur(4px)" }
+                    : { opacity: 0, x: prefersReducedMotion ? 0 : -10, filter: itemBlur }
                 }
-                transition={{ duration: titleDur, ease: EASE_OUT, delay: isRevealed ? 0.05 : 0 }}
+                transition={{
+                  duration: titleDuration,
+                  ease: EASE_OUT,
+                  delay: isRevealed && !prefersReducedMotion ? 0.08 : 0,
+                }}
                 style={{ pointerEvents: isRevealed ? "auto" : "none" }}
               >
                 <div className="ac-timeline__title">{entry.title}</div>
               </motion.div>
 
-              {/* reveal details card AFTER company name */}
               <motion.div
                 className="ac-timeline__content"
-                initial={{ opacity: 0, y: itemOffset, filter: "blur(4px)" }}
+                initial={{ opacity: 0, y: itemOffset, filter: itemBlur }}
                 animate={
                   isRevealed
                     ? { opacity: 1, y: 0, filter: "blur(0px)" }
-                    : { opacity: 0, y: itemOffset, filter: "blur(4px)" }
+                    : { opacity: 0, y: itemOffset, filter: itemBlur }
                 }
-                transition={{ duration: contentDur, ease: EASE_OUT, delay: isRevealed ? 0.22 : 0 }}
+                transition={{
+                  duration: isRevealed ? contentDuration : titleDuration,
+                  ease: EASE_OUT,
+                  delay: isRevealed && !prefersReducedMotion ? 0.24 : 0,
+                }}
                 style={{ pointerEvents: isRevealed ? "auto" : "none" }}
               >
                 {entry.content}
@@ -491,11 +514,3 @@ const Timeline: React.FC<TimelineProps> = ({
 };
 
 export default Timeline;
-
-
-
-
-
-
-
-

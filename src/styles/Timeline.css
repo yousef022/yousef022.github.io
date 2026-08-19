@@ -6,89 +6,66 @@
   --company-logo-font: clamp(0.66rem, 0.56rem + 0.36vw, 0.96rem);
   --company-logo-img-size: calc(var(--company-logo-size) * 0.84);
   --company-logo-img-scale: 1.18;
-}
-.ac-timeline__inner { position: relative; }
-
-/* .ac-timeline__lineBase {
-  position: absolute;
-  left: 12px;
-  top: var(--ac-line-cap, 29px);
-  width: 2px;
-  border-radius: 999px;
-  background: rgba(0,0,0,0.14);
-}
-@media (prefers-color-scheme: dark) {
-  .ac-timeline__lineBase { background: rgba(255,255,255,0.10); }
+  --timeline-track: rgba(167, 176, 193, 0.16);
+  --timeline-accent: #746df2;
+  --timeline-accent-muted: rgba(116, 109, 242, 0.46);
+  --timeline-node-border: rgba(167, 176, 193, 0.36);
+  --timeline-node-bg: var(--panel2);
 }
 
-.ac-timeline__lineFill {
-  position: absolute;
-  left: 12px;
-  top: var(--ac-line-cap, 29px);
-  width: 2px;
-  border-radius: 999px;
-  background: linear-gradient(
-    to bottom,
-    rgba(99, 102, 241, 0),
-    rgba(99, 102, 241, 0.9),
-    rgba(236, 72, 153, 0.9),
-    rgba(236, 72, 153, 0)
-  );
-} */
+html[data-theme="light"] .ac-timeline {
+  --timeline-track: rgba(16, 19, 24, 0.16);
+  --timeline-accent: #6259d9;
+  --timeline-accent-muted: rgba(98, 89, 217, 0.42);
+  --timeline-node-border: rgba(16, 19, 24, 0.3);
+}
+
+.ac-timeline__inner {
+  position: relative;
+}
 
 .ac-timeline__item {
   position: relative;
+  z-index: 1;
   padding-left: 44px;
   padding-top: 18px;
   padding-bottom: clamp(68px, 8vw, 128px);
   display: grid;
   grid-template-columns: var(--ac-title-col, 220px) minmax(0, 1fr);
   gap: clamp(24px, 2.4vw, 36px);
-  will-change: transform, opacity;
 }
 
 .ac-timeline__sticky {
   position: static;
   align-self: start;
-
-  /* lock width so sticky doesn't re-measure and “shift” */
   width: var(--ac-title-col, 220px);
   min-width: var(--ac-title-col, 220px);
   justify-self: start;
   box-sizing: border-box;
-
-  /* move spacing here instead of title margin (prevents jump) */
   padding-top: 8px;
-
-  /* reduce subpixel jitter */
   transform: translateZ(0);
-  will-change: transform;
+  will-change: transform, opacity;
   backface-visibility: hidden;
 }
 
-
-
-
-/* stickyTitle prop */
 .ac-timeline[data-sticky-title="true"] .ac-timeline__sticky {
   position: sticky;
   top: var(--ac-sticky-top, 84px);
 }
 
-
 .ac-timeline__title {
-  font-weight: 800;
-  font-size: var(--text-md);
-  line-height: 1.1;
-  margin: 0;
   display: inline-block;
   width: fit-content;
+  max-width: 100%;
+  margin: 0;
   padding: clamp(6px, 0.45vw, 9px) clamp(10px, 0.8vw, 14px);
-  border-radius: 999px;
   border: 1px solid var(--border);
+  border-radius: 999px;
   background: var(--surface2);
   color: var(--text);
-  max-width: 100%;
+  font-size: var(--text-md);
+  font-weight: 800;
+  line-height: 1.1;
   white-space: normal;
 }
 
@@ -96,37 +73,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--company-logo-gap);
-  max-width: 100%;
   min-width: 0;
-}
-
-/* little “head” that moves with the fill (helps sell the build) */
-.ac-timeline__lineHead {
-  position: absolute;
-  left: 12px;
-  top: calc(var(--ac-line-cap, 29px) - 5px);
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  transform: translateX(-4px);
-  background: rgba(99, 102, 241, 0.9);
-  box-shadow:
-    0 0 0 6px rgba(99, 102, 241, 0.10),
-    0 0 18px rgba(236, 72, 153, 0.16);
-  pointer-events: none;
-}
-
-/* ripple ring for the “click” */
-.ac-timeline__dotRipple {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  border: 2px solid rgba(99, 102, 241, 0.55);
-  box-shadow:
-    0 0 0 6px rgba(99, 102, 241, 0.10),
-    0 0 22px rgba(236, 72, 153, 0.12);
-  pointer-events: none;
+  max-width: 100%;
 }
 
 .ac-timeline__companyName {
@@ -142,119 +90,191 @@
   --company-logo-fg: rgba(231, 234, 241, 0.95);
   width: var(--company-logo-size);
   height: var(--company-logo-size);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--company-logo-radius);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  font-size: var(--company-logo-font);
-  line-height: 1;
-  font-weight: 800;
-  letter-spacing: 0.03em;
+  overflow: hidden;
   background: var(--company-logo-bg);
   color: var(--company-logo-fg);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  overflow: hidden;
+  font-size: var(--company-logo-font);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.03em;
 }
 
 .ac-timeline__companyLogoImg {
   width: var(--company-logo-img-size);
   height: var(--company-logo-img-size);
-  object-fit: contain;
   display: block;
+  object-fit: contain;
   transform: scale(var(--company-logo-img-scale));
   transform-origin: center;
 }
 
+.ac-timeline__companyLogo--bare {
+  border-color: transparent;
+  background: transparent;
+}
+
+.ac-timeline__segment {
+  position: absolute;
+  z-index: 0;
+  left: 12px;
+  width: 2px;
+  pointer-events: none;
+}
+
+.ac-timeline__segmentTrack,
+.ac-timeline__segmentFill {
+  position: absolute;
+  inset: 0;
+  width: 2px;
+  border-radius: 1px;
+}
+
+.ac-timeline__segmentTrack {
+  background: var(--timeline-track);
+}
+
+.ac-timeline__segmentFill {
+  background: var(--timeline-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  will-change: transform;
+}
+
+.ac-timeline__segmentHead {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.ac-timeline__segmentHead::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  background: var(--timeline-accent);
+  box-shadow: 0 0 0 2px var(--timeline-node-bg);
+  transform: rotate(45deg);
+}
+
 .ac-timeline__dotWrap {
   position: absolute;
-  left: 0;
+  z-index: 2;
   top: 18px;
+  left: 0;
   width: 26px;
   height: 26px;
   display: grid;
   place-items: center;
+  transition: opacity 140ms ease;
 }
 
 .ac-timeline__dotOuter {
-  width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.7);
-  box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.12);
+  position: relative;
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--timeline-node-border);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--timeline-node-bg);
 }
-@media (prefers-color-scheme: dark) {
-  .ac-timeline__dotOuter {
-    background: rgba(0,0,0,0.55);
-    box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.18);
+
+.ac-timeline__dotWrap[data-state="pending"] .ac-timeline__dotOuter {
+  border-color: var(--timeline-accent-muted);
+}
+
+.ac-timeline__dotWrap[data-state="locked"] .ac-timeline__dotOuter {
+  border-color: var(--timeline-accent-muted);
+}
+
+.ac-timeline__dotInner {
+  width: 5px;
+  height: 5px;
+  border-radius: 1px;
+  background: var(--timeline-accent);
+  transform: rotate(45deg);
+}
+
+.ac-timeline__item[data-current="true"] .ac-timeline__dotOuter::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 1px solid transparent;
+  border-top-color: var(--timeline-accent);
+  border-right-color: var(--timeline-accent);
+  border-radius: 50%;
+  transform: rotate(18deg);
+}
+
+.ac-timeline__contactRing {
+  position: absolute;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--timeline-accent);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.ac-timeline__branch {
+  position: absolute;
+  z-index: 0;
+  top: 12px;
+  left: 21px;
+  width: 24px;
+  height: 1px;
+  background: var(--timeline-accent-muted);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.ac-timeline__content {
+  min-width: 0;
+  will-change: transform, opacity;
+}
+
+@media (max-width: 900px) {
+  .ac-timeline__item {
+    grid-template-columns: 1fr;
+  }
+
+  .ac-timeline__sticky {
+    position: static !important;
   }
 }
 
-/* Current role highlight (must be AFTER dotOuter rules) */
-.ac-timeline .ac-timeline__item[data-current="true"] .ac-timeline__dotOuter {
-  box-shadow:
-    0 0 0 6px rgba(99, 102, 241, 0.34),
-    0 0 28px rgba(99, 102, 241, 0.22),
-    0 0 58px rgba(236, 72, 153, 0.14);
+@media (max-width: 560px) {
+  .ac-timeline__item {
+    padding-left: 40px;
+  }
+
+  .ac-timeline__branch {
+    width: 20px;
+  }
 }
 
-.ac-timeline .ac-timeline__item[data-current="true"] .ac-timeline__dotInner {
-  box-shadow:
-    0 0 0 3px rgba(236, 72, 153, 0.18),
-    0 0 16px rgba(236, 72, 153, 0.22);
+@media (prefers-reduced-motion: reduce) {
+  .ac-timeline__dotWrap {
+    transition: none;
+  }
+
+  .ac-timeline__segmentHead,
+  .ac-timeline__contactRing {
+    display: none;
+  }
 }
-
-
-.ac-timeline__dotInner {
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: rgba(99, 102, 241, 0.9);
-  box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.10);
-}
-
-.ac-timeline__content { min-width: 0; }
-
-@media (max-width: 900px) {
-  .ac-timeline__item { grid-template-columns: 1fr; }
-  .ac-timeline__sticky { position: static !important; }
-}
-
-/* segment pieces that build one-by-one */
-.ac-timeline__seg {
-  position: absolute;
-  left: 12px;
-  width: 2px;
-  border-radius: 999px;
-
-  /* same vibe as your fill line */
-  background: linear-gradient(
-    to bottom,
-    rgba(99, 102, 241, 0.0),
-    rgba(99, 102, 241, 0.95),
-    rgba(236, 72, 153, 0.95),
-    rgba(236, 72, 153, 0.0)
-  );
-
-  transform-origin: top;
-  transform: scaleY(0); /* IMPORTANT: starts invisible */
-  will-change: transform;
-  pointer-events: none;
-}
-
-/* ripple ring for the “click” */
-.ac-timeline__dotRipple {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  border: 2px solid rgba(99, 102, 241, 0.55);
-  box-shadow:
-    0 0 0 6px rgba(99, 102, 241, 0.10),
-    0 0 22px rgba(236, 72, 153, 0.12);
-  pointer-events: none;
-}
-
-
-
-

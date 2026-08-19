@@ -3,6 +3,8 @@ export type ExperienceLogo = {
   initials?: string;
   bg?: string;
   color?: string;
+  presentation?: "framed" | "bare";
+  scale?: number;
 };
 
 export type Experience = {
@@ -18,27 +20,27 @@ export const experiences: Experience[] = [
   {
     company: "deepidv",
     role: "Software Engineer",
-    period: "July 2025 - Present",
-    summary: "Building identity verification and device management platform systems.",
+    period: "July 2025 - August 2026",
+    summary: "Built identity-verification products across browser, web, mobile, backend, and cloud.",
     highlights: [
-      "Shipped features for onboarding, verification, and operational tooling",
-      "Reduced support overhead through better logging, clearer failure handling, and RCA-driven fixes",
+      "Shipped Deepeye's Chrome extension, dashboard, authentication, APIs, and AWS infrastructure",
+      "Built DeepCam device management and resumable verification workflows across web, mobile, and backend systems",
     ],
     logo: {
-      src: "/logos/deepidv.png",
+      src: "/logos/deepidv-emblem.svg",
       initials: "DI",
-      bg: "rgba(70, 110, 255, 0.26)",
-      color: "#c9d8ff",
+      presentation: "bare",
+      scale: 1.12,
     },
   },
   {
     company: "Big Instance Technologies",
     role: "Software Developer",
     period: "Aug 2024 - July 2025",
-    summary: "Built systems to manage and monitor telecom equipment.",
+    summary: "Built generator fleet monitoring and automation software for a major Canadian telecom deployment.",
     highlights: [
-      "Designed workflows for device monitoring and reporting",
-      "Delivered stable UI patterns for operational tooling",
+      "Built TypeScript and Node.js APIs with Bull/Redis jobs for generator onboarding and monitoring",
+      "Automated mobile and data workflows to make fleet operations more observable and recoverable",
     ],
     logo: {
       src: "/logos/big-instance-technologies.png",
@@ -51,10 +53,10 @@ export const experiences: Experience[] = [
     company: "Cleanlist.ai",
     role: "Full-Stack Developer Intern",
     period: "Feb 2024 - Aug 2024",
-    summary: "Developed an email validation system for generated user leads.",
+    summary: "Built email-validation software for lead-generation workflows.",
     highlights: [
-      "Implemented validation services and API endpoints",
-      "Improved lead quality with better verification logic",
+      "Implemented validation services and API endpoints for generated lead data",
+      "Improved lead quality through more reliable email-verification logic",
     ],
     logo: {
       src: "/logos/cleanlist-ai.png",
@@ -67,10 +69,10 @@ export const experiences: Experience[] = [
     company: "SOTI",
     role: "Research Assistant",
     period: "Sep 2022 - Dec 2023",
-    summary: "Contributed to SOTI One platform features and device health research.",
+    summary: "Contributed to Android data collection and device-health research.",
     highlights: [
-      "Updated data collection app for new Android devices",
-      "Built fall detection research workflows and surface detection models",
+      "Updated an Android data-collection app for newer devices",
+      "Built fall-detection research workflows and surface-classification models",
     ],
     logo: { initials: "SO", bg: "rgba(212, 146, 255, 0.20)", color: "#f2d8ff" },
   },
