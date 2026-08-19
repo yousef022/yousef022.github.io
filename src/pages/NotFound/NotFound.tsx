@@ -7,10 +7,14 @@ const NotFound: React.FC = () => {
 
   return (
     <Card>
-      <h1 className="h1" style={{ fontSize: 34 }}>404</h1>
-      <p className="p">That page doesn’t exist.</p>
+      <h1 className="h1" style={{ fontSize: 34 }}>
+        404
+      </h1>
+      <p className="p">That page does not exist.</p>
       <div style={{ marginTop: 14 }}>
-        <Link to="/" className="kbd">Go home →</Link>
+        <Link to="/" className="kbd">
+          Go home
+        </Link>
       </div>
     </Card>
   );

@@ -5,4 +5,5 @@ export type Project = {
   stack: string[];
   highlights: string[];
   links?: { label: string; href: string }[];
+  featured: boolean;
 };

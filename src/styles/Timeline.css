@@ -1,0 +1,280 @@
+.ac-timeline {
+  position: relative;
+  --company-logo-size: clamp(22px, 2.2vw, 40px);
+  --company-logo-radius: clamp(7px, 0.7vw, 12px);
+  --company-logo-gap: clamp(9px, 0.75vw, 14px);
+  --company-logo-font: clamp(0.66rem, 0.56rem + 0.36vw, 0.96rem);
+  --company-logo-img-size: calc(var(--company-logo-size) * 0.84);
+  --company-logo-img-scale: 1.18;
+  --timeline-track: rgba(167, 176, 193, 0.16);
+  --timeline-accent: #746df2;
+  --timeline-accent-muted: rgba(116, 109, 242, 0.46);
+  --timeline-node-border: rgba(167, 176, 193, 0.36);
+  --timeline-node-bg: var(--panel2);
+}
+
+html[data-theme="light"] .ac-timeline {
+  --timeline-track: rgba(16, 19, 24, 0.16);
+  --timeline-accent: #6259d9;
+  --timeline-accent-muted: rgba(98, 89, 217, 0.42);
+  --timeline-node-border: rgba(16, 19, 24, 0.3);
+}
+
+.ac-timeline__inner {
+  position: relative;
+}
+
+.ac-timeline__item {
+  position: relative;
+  z-index: 1;
+  padding-left: 44px;
+  padding-top: 18px;
+  padding-bottom: clamp(68px, 8vw, 128px);
+  display: grid;
+  grid-template-columns: var(--ac-title-col, 220px) minmax(0, 1fr);
+  gap: clamp(24px, 2.4vw, 36px);
+}
+
+.ac-timeline__sticky {
+  position: static;
+  align-self: start;
+  width: var(--ac-title-col, 220px);
+  min-width: var(--ac-title-col, 220px);
+  justify-self: start;
+  box-sizing: border-box;
+  padding-top: 8px;
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.ac-timeline[data-sticky-title="true"] .ac-timeline__sticky {
+  position: sticky;
+  top: var(--ac-sticky-top, 84px);
+}
+
+.ac-timeline__title {
+  display: inline-block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0;
+  padding: clamp(6px, 0.45vw, 9px) clamp(10px, 0.8vw, 14px);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface2);
+  color: var(--text);
+  font-size: var(--text-md);
+  font-weight: 800;
+  line-height: 1.1;
+  white-space: normal;
+}
+
+.ac-timeline__titleInner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--company-logo-gap);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ac-timeline__companyName {
+  display: inline-block;
+  min-width: 0;
+  max-width: clamp(11ch, 18vw, 10ch);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.ac-timeline__companyLogo {
+  --company-logo-bg: rgba(120, 100, 255, 0.24);
+  --company-logo-fg: rgba(231, 234, 241, 0.95);
+  width: var(--company-logo-size);
+  height: var(--company-logo-size);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--company-logo-radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  overflow: hidden;
+  background: var(--company-logo-bg);
+  color: var(--company-logo-fg);
+  font-size: var(--company-logo-font);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.03em;
+}
+
+.ac-timeline__companyLogoImg {
+  width: var(--company-logo-img-size);
+  height: var(--company-logo-img-size);
+  display: block;
+  object-fit: contain;
+  transform: scale(var(--company-logo-img-scale));
+  transform-origin: center;
+}
+
+.ac-timeline__companyLogo--bare {
+  border-color: transparent;
+  background: transparent;
+}
+
+.ac-timeline__segment {
+  position: absolute;
+  z-index: 0;
+  left: 12px;
+  width: 2px;
+  pointer-events: none;
+}
+
+.ac-timeline__segmentTrack,
+.ac-timeline__segmentFill {
+  position: absolute;
+  inset: 0;
+  width: 2px;
+  border-radius: 1px;
+}
+
+.ac-timeline__segmentTrack {
+  background: var(--timeline-track);
+}
+
+.ac-timeline__segmentFill {
+  background: var(--timeline-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  will-change: transform;
+}
+
+.ac-timeline__segmentHead {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.ac-timeline__segmentHead::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  background: var(--timeline-accent);
+  box-shadow: 0 0 0 2px var(--timeline-node-bg);
+  transform: rotate(45deg);
+}
+
+.ac-timeline__dotWrap {
+  position: absolute;
+  z-index: 2;
+  top: 18px;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  transition: opacity 140ms ease;
+}
+
+.ac-timeline__dotOuter {
+  position: relative;
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--timeline-node-border);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--timeline-node-bg);
+}
+
+.ac-timeline__dotWrap[data-state="pending"] .ac-timeline__dotOuter {
+  border-color: var(--timeline-accent-muted);
+}
+
+.ac-timeline__dotWrap[data-state="locked"] .ac-timeline__dotOuter {
+  border-color: var(--timeline-accent-muted);
+}
+
+.ac-timeline__dotInner {
+  width: 5px;
+  height: 5px;
+  border-radius: 1px;
+  background: var(--timeline-accent);
+  transform: rotate(45deg);
+}
+
+.ac-timeline__item[data-current="true"] .ac-timeline__dotOuter::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 1px solid transparent;
+  border-top-color: var(--timeline-accent);
+  border-right-color: var(--timeline-accent);
+  border-radius: 50%;
+  transform: rotate(18deg);
+}
+
+.ac-timeline__contactRing {
+  position: absolute;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--timeline-accent);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.ac-timeline__branch {
+  position: absolute;
+  z-index: 0;
+  top: 12px;
+  left: 21px;
+  width: 24px;
+  height: 1px;
+  background: var(--timeline-accent-muted);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.ac-timeline__content {
+  min-width: 0;
+  will-change: transform, opacity;
+}
+
+@media (max-width: 900px) {
+  .ac-timeline__item {
+    grid-template-columns: 1fr;
+  }
+
+  .ac-timeline__sticky {
+    position: static !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .ac-timeline__item {
+    padding-left: 40px;
+  }
+
+  .ac-timeline__branch {
+    width: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-timeline__dotWrap {
+    transition: none;
+  }
+
+  .ac-timeline__segmentHead,
+  .ac-timeline__contactRing {
+    display: none;
+  }
+}

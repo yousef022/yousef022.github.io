@@ -1,45 +1,107 @@
-import { NavLink } from "react-router-dom";
-import { profile } from "../../features/profile/profile.data";
+import { useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { TbMoon, TbSun } from "react-icons/tb";
+import NavPill from "../ui/NavPill";
 
 const TopNav: React.FC = () => {
+  type Theme = "dark" | "light";
+
+  const location = useLocation();
+  const [navWrapEl, setNavWrapEl] = useState<HTMLElement | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const getInitialTheme = (): Theme => {
+    const stored = localStorage.getItem("theme");
+    if (stored === "dark" || stored === "light") return stored;
+
+    const prefersLight = window.matchMedia?.("(prefers-color-scheme: light)")?.matches ?? false;
+
+    return prefersLight ? "light" : "dark";
+  };
+
+  const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname, location.hash]);
+
+  const toggleTheme = () => {
+    setTheme((t) => (t === "dark" ? "light" : "dark"));
+  };
+
   const linkStyle = ({ isActive }: { isActive: boolean }) =>
     ({
-      padding: "10px 12px",
-      borderRadius: 12,
-      textDecoration: "none",
-      border: `1px solid ${isActive ? "rgba(255,255,255,0.18)" : "transparent"}`,
-      background: isActive ? "rgba(255,255,255,0.04)" : "transparent",
-      color: isActive ? "rgba(231,234,241,1)" : "rgba(167,176,193,1)",
+      color: isActive ? "var(--text)" : "var(--muted)",
     }) as React.CSSProperties;
 
-  return (
-    <header style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-      <div
-        className="container"
-        style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: 14 }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span className="kbd">{profile.role}</span>
-          <span style={{ color: "rgba(231,234,241,0.9)" }}>{profile.name}</span>
-        </div>
+  const navLinks = [
+    { to: "/", label: "Home", end: true },
+    { to: "/projects", label: "Work", end: false },
+    { to: "/about", label: "About", end: false },
+    { to: "/contact", label: "Contact", end: false },
+  ] as const;
 
-        <nav style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-          <NavLink to="/" style={linkStyle} end>
-            Ship Log
-          </NavLink>
-          <NavLink to="/projects" style={linkStyle}>
-            Projects
-          </NavLink>
-          <NavLink to="/now" style={linkStyle}>
-            Now
-          </NavLink>
-          <NavLink to="/about" style={linkStyle}>
-            About
-          </NavLink>
-          <NavLink to="/contact" style={linkStyle}>
-            Contact
-          </NavLink>
-        </nav>
+  return (
+    <header style={{ borderBottom: "1px solid var(--border)" }}>
+      <div className="bar">
+        <div className="container">
+          <div className="navBar">
+            <div className="navDesktop navWrap" ref={setNavWrapEl}>
+              <nav className="nav">
+                {navLinks.map((link) => (
+                  <NavLink key={link.to} to={link.to} style={linkStyle} end={link.end}>
+                    {link.label}
+                  </NavLink>
+                ))}
+              </nav>
+
+              <NavPill containerEl={navWrapEl} />
+            </div>
+
+            <button
+              type="button"
+              className="navMenuBtn"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-nav-panel"
+              onClick={() => setMobileOpen((open) => !open)}
+            >
+              <span className="navMenuIcon" aria-hidden>
+                <span />
+                <span />
+                <span />
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="themeToggle"
+              title={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+              aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+              aria-pressed={theme === "light"}
+            >
+              {theme === "dark" ? <TbSun aria-hidden="true" /> : <TbMoon aria-hidden="true" />}
+            </button>
+          </div>
+
+          <div id="mobile-nav-panel" className={`navMobilePanel${mobileOpen ? " isOpen" : ""}`}>
+            <div className="navMobilePanelInner">
+              <nav className="nav nav--dropdown">
+                {navLinks.map((link) => (
+                  <NavLink key={`mobile-${link.to}`} to={link.to} end={link.end} style={linkStyle}>
+                    {link.label}
+                  </NavLink>
+                ))}
+              </nav>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
   );
