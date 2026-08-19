@@ -4,7 +4,11 @@ import Card from "../../Card";
 import Tag from "../../Tag";
 import "../../../../styles/HeroBento.css";
 
-export type HeroBentoCta = { label: string; href: string };
+export type HeroBentoCta = {
+  label: string;
+  href: string;
+  openInNewTab?: boolean;
+};
 
 export type HeroBentoSocial = {
   label: string;
@@ -117,8 +121,14 @@ const HeroBento: React.FC<HeroBentoProps> = ({
                   </a>
                 ) : null}
                 {secondaryCta ? (
-                  <a href={secondaryCta.href} className="hbSecondaryLink">
-                    {secondaryCta.label}
+                  <a
+                    href={secondaryCta.href}
+                    className="hbSecondaryLink"
+                    target={secondaryCta.openInNewTab ? "_blank" : undefined}
+                    rel={secondaryCta.openInNewTab ? "noreferrer noopener" : undefined}
+                  >
+                    <span>{secondaryCta.label}</span>
+                    <TbArrowUpRight aria-hidden="true" />
                   </a>
                 ) : null}
               </div>

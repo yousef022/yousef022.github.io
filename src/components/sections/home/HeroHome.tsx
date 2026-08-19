@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
-import { TbLayoutGrid, TbRocket, TbSparkles, TbStack2 } from "react-icons/tb";
+import { TbBrowser, TbCloudComputing, TbDeviceMobile } from "react-icons/tb";
 import Section from "../../ui/Section";
 import HeroBento from "../../ui/base/hero/HeroBento";
 import { profile } from "../../../features/profile/profile.data";
-import { projects } from "../../../features/projects/project.data";
+import { selectAllCaseStudies } from "../../../features/caseStudies/caseStudy.selectors";
 import {
   GithubIcon,
   LinkedInIcon,
@@ -14,6 +14,9 @@ import {
   PinIcon,
 } from "../../../assets/icons";
 import yoMark from "../../../assets/A_YO.svg?url";
+
+const caseStudyCount = selectAllCaseStudies().length;
+const resumeHref = `${import.meta.env.BASE_URL}Yousef-Osman-Resume.pdf`;
 
 const HomeHero: React.FC = () => {
   const socials = useMemo(
@@ -31,22 +34,25 @@ const HomeHero: React.FC = () => {
 
   const focusChips = useMemo(
     () =>
-      profile.focus.map((label) => ({
+      profile.hero.focus.map((label) => ({
         label,
         icon:
-          label === "Modern UI" ? <TbSparkles /> :
-          label === "Scalable systems" ? <TbLayoutGrid /> :
-          label === "Full-stack delivery" ? <TbStack2 /> :
-          label === "Startups" ? <TbRocket /> : undefined,
+          label === "Browser & web" ? (
+            <TbBrowser />
+          ) : label === "Mobile systems" ? (
+            <TbDeviceMobile />
+          ) : label === "Backend & cloud" ? (
+            <TbCloudComputing />
+          ) : undefined,
       })),
     [],
   );
 
   const stats = useMemo(
     () => [
-      { label: "Experience", value: "2+ yrs", icon: <BriefcaseIcon /> },
-      { label: "Startups", value: "3 teams", icon: <UsersIcon /> },
-      { label: "Projects", value: `${projects.length}+`, icon: <LayersIcon /> },
+      { label: "Experience", value: "3+ years", icon: <BriefcaseIcon /> },
+      { label: "Product teams", value: "3", icon: <UsersIcon /> },
+      { label: "Case studies", value: String(caseStudyCount), icon: <LayersIcon /> },
       { label: "Location", value: profile.location, icon: <PinIcon /> },
     ],
     [],
@@ -57,12 +63,13 @@ const HomeHero: React.FC = () => {
       <HeroBento
         title={profile.name}
         subtitle={profile.role}
-        tagline="Shipping product-grade apps & systems for startups."
+        tagline={profile.hero.tagline}
         chips={focusChips}
         socials={socials}
         stats={stats}
         avatarSrc={yoMark}
-        primaryCta={{ label: "View Projects", href: "/#/projects" }}
+        primaryCta={{ label: "View Work", href: "#/projects" }}
+        secondaryCta={{ label: "Resume", href: resumeHref, openInNewTab: true }}
       />
     </Section>
   );
